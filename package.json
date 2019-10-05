@@ -1,0 +1,13 @@
+{
+  "name": "shop",
+  "version": "1.0.0",
+  "description": "shop",
+  "scripts": {
+    "start": "concurrently \"cd server && npm start\" \"cd client && npm start\""
+  },
+  "author": "kokowka",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^4.1.2"
+  }
+}
