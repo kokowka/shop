@@ -16,7 +16,7 @@ let strings = new LocalizedStrings(localization);
 class MainPage extends Component {
     constructor(props) {
         super(props);
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'Українська';
         const currency = localStorage.getItem('currency');
         setInterval(this.updateTimerOfSuperPropose, 60000);
         strings.setLanguage(language);
@@ -62,7 +62,8 @@ class MainPage extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:3001/getSuperPropose')
+        console.log(process.env);
+        axios.get(`${process.env.REACT_APP_API_URL}/getSuperPropose`)
             .then(res => this.setState({superPropose: res.data}))
             .catch(error => console.log(error));
         axios.get('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11')
@@ -70,7 +71,7 @@ class MainPage extends Component {
                 this.setState({exchangeValue: result.data})
             })
             .catch(error => console.log(error));
-        axios.get('http://localhost:3001/getBestGoods?size=20')
+        axios.get(`${process.env.REACT_APP_API_URL}/getBestGoods?size=20`)
             .then(res => this.setState({goods: res.data, isActive: isActiveWish(this.state.isActive, res.data)}))
     }
 
@@ -80,7 +81,7 @@ class MainPage extends Component {
             let timer = superPropose[i].timerOfPropose - 60000;
             if(timer < 0) timer = 0;
             superPropose[i].timer = timer;
-            axios.put('http://localhost:3001/setTimerForSuperProposition', {id: superPropose[i].id, timer: timer})
+            axios.put(`${process.env.REACT_APP_API_URL}/setTimerForSuperProposition`, {id: superPropose[i].id, timer: timer})
                 .catch(error => console.log(error))
         }
     };
@@ -98,13 +99,13 @@ class MainPage extends Component {
               sizeOfStrings += childNodes[i].innerText.length * 13;
           document.getElementsByClassName('tabs_line')[0].childNodes[0].style.marginLeft = `${index * 20 + sizeOfStrings}px`;
           if(index === 0)
-              axios.get('http://localhost:3001/getBestGoods?size=20')
+              axios.get(`${process.env.REACT_APP_API_URL}/getBestGoods?size=20`)
                   .then(res => this.setState({goods: res.data, isActive: isActiveWish(this.state.isActive, res.data)}));
           else if(index === 1)
-              axios.get('http://localhost:3001/getDiscountGoods?size=20')
+              axios.get(`${process.env.REACT_APP_API_URL}/getDiscountGoods?size=20`)
                   .then(res => this.setState({goods: res.data, isActive: isActiveWish(this.state.isActive, res.data)}));
           else
-              axios.get('http://localhost:3001/getNewGoods?size=20')
+              axios.get(`${process.env.REACT_APP_API_URL}/getNewGoods?size=20`)
                   .then(res => this.setState({goods: res.data, isActive: isActiveWish(this.state.isActive, res.data)}));
           this.setState({currentFeatured: index});
       }

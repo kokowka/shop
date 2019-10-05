@@ -17,7 +17,7 @@ class Contact extends Component {
 
     sendMessage = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3001/sendEmail', {
+        axios.post(`${process.env.REACT_APP_API_URL}/sendEmail`, {
             subject: 'Contact',
             html: `${e.target[0].value}\n${e.target[1].value}\n${e.target[2].value}\n${e.target[3].value}`
         });

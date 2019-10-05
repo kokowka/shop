@@ -12,7 +12,7 @@ class Header extends Component {
 
     constructor(props) {
         super(props);
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'Українська';
         const fullName = localStorage.getItem('fullName');
         let languages = ["Українська", "Русский", "English"];
         let currencies = ["₴ Гривня", "₽ Рубль", "$ US dollar"];
@@ -60,12 +60,12 @@ class Header extends Component {
                 this.setState({exchangeValue: result.data})
             })
             .catch(error => console.log(error));
-        axios.get('http://localhost:3001/goods/getAllGoods')
+        axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods`)
             .then(result => {
                 this.setState({goods: result.data, bestProposition: result.data.slice(0, 5)})
             })
             .catch(error => console.log(error));
-         axios.get('http://localhost:3001/getAll?type=brand')
+         axios.get(`${process.env.REACT_APP_API_URL}/getAll?type=brand`)
              .then(result => {
                  this.setState({brands: result.data.result.slice(0, 5)});
              })
@@ -118,23 +118,23 @@ class Header extends Component {
       const current = e.currentTarget.textContent;
       const indexOf = searchCategories.indexOf(current);
       if(indexOf === 2 || indexOf === 3) {
-          axios.get('http://localhost:3001/goods/getAllGoods?category=computerAndLaptops')
+          axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods?category=computerAndLaptops`)
               .then(result => this.setState({goods: result.data, category: 'computerAndLaptops'}))
               .catch(error => console.log(error));
       } else if(indexOf === 4) {
-          axios.get('http://localhost:3001/goods/getAllGoods?category=cameras')
+          axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods?category=cameras`)
               .then(result => this.setState({goods: result.data, category: 'cameras'}))
               .catch(error => console.log(error));
       } else if(indexOf === 5) {
-          axios.get('http://localhost:3001/goods/getAllGoods?category=hardware')
+          axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods?category=hardware`)
               .then(result => this.setState({goods: result.data, category: 'hardware'}))
               .catch(error => console.log(error));
       } else if(indexOf === 6) {
-          axios.get('http://localhost:3001/goods/getAllGoods?category=phones')
+          axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods?category=phones`)
               .then(result => this.setState({goods: result.data, category: 'phones'}))
               .catch(error => console.log(error));
       } else {
-          axios.get('http://localhost:3001/goods/getAllGoods')
+          axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods`)
               .then(result => this.setState({goods: result.data, category: ''}))
               .catch(error => console.log(error));
       }

@@ -26,7 +26,7 @@ class HeaderBanner extends Component{
     }
 
     componentDidMount() {
-        axios.get('http://localhost:3001/getBannerByType?type=header')
+        axios.get(`${process.env.REACT_APP_API_URL}/getBannerByType?type=header`)
             .then(res => {if(res.data[0]) this.setState({banner: res.data[0]})})
             .catch(error => console.log(error));
         axios.get('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11')
@@ -39,7 +39,7 @@ class HeaderBanner extends Component{
     render() {
         return <div>
                 <div className="banner">
-                    <div className="banner_background"></div>
+                    <div className="banner_background"/>
                     <div className="container fill_height">
                         <div className="row fill_height">
                             <div className="banner_product_image"><img src={this.state.banner.img} alt=""/></div>

@@ -31,7 +31,7 @@ class FooterBanner extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:3001/getBannerByType?type=footer')
+        axios.get(`${process.env.REACT_APP_API_URL}/getBannerByType?type=footer`)
             .then(res => this.setState({banners: res.data}))
             .catch(error => console.log(error));
     }

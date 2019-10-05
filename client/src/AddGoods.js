@@ -15,7 +15,7 @@ class AddGoods extends Component{
         super(props);
         const language = localStorage.getItem('language');
         strings.setLanguage(language);
-        axios.post('http://localhost:3001/isAdmin',{
+        axios.post(`${process.env.REACT_APP_API_URL}/isAdmin`,{
             email: localStorage.getItem('email'),
             fullName: localStorage.getItem('fullName')
         }).then(res => {
@@ -53,7 +53,7 @@ class AddGoods extends Component{
 
     addGoods = (e) =>{
         e.preventDefault();
-        axios.post('http://localhost:3001/goods/create', {
+        axios.post(`${process.env.REACT_APP_API_URL}/goods/create`, {
             name: e.target[0].value,
             brand: e.target[1].value,
             colors: this.state.colors,

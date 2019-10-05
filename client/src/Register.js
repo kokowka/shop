@@ -29,7 +29,7 @@ class Register extends Component {
             this.setState({isErrorEmail: true});
         }
         else {
-            axios.post('http://localhost:3001/register', {
+            axios.post(`${process.env.REACT_APP_API_URL}:3001/register`, {
                 fullName: e.target[0].value,
                 email: e.target[1].value,
                 phone: `${e.target[2].value}${e.target[3].value}`,

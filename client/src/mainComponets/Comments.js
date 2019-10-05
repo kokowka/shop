@@ -23,7 +23,7 @@ class Comments extends Component{
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:3001/getAllCommentById?id=${this.state.id}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/getAllCommentById?id=${this.state.id}`)
             .then(result => this.setState({comments: result.data}))
             .catch(error => console.log(error))
     }
@@ -33,7 +33,7 @@ class Comments extends Component{
         const fullName = this.state.fullName ? this.state.fullName : e.target[0].value;
         const text = e.target[1].value;
         if(!fullName || !text) return;
-        axios.post('http://localhost:3001/addComment', {
+        axios.post(`${process.env.REACT_APP_API_URL}/addComment`, {
             fullName: fullName,
             text: text,
             idOfProduct: this.state.id
