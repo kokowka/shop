@@ -62,7 +62,6 @@ class MainPage extends Component {
     }
 
     componentDidMount() {
-        console.log(process.env);
         axios.get(`${process.env.REACT_APP_API_URL}/getSuperPropose`)
             .then(res => this.setState({superPropose: res.data}))
             .catch(error => console.log(error));
