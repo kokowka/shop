@@ -9,6 +9,9 @@ class Footer extends Component {
         super(props);
         const language = localStorage.getItem('language') || 'Українська';
         strings.setLanguage(language);
+        this.state = {
+            categories: strings.category
+        }
     }
 
     render() {
@@ -41,13 +44,12 @@ class Footer extends Component {
                         <div className="footer_column">
                             <div className="footer_title">{strings.findFast}</div>
                             <ul className="footer_list">
-                                <li><a href={'/shop?type=laptop'}>{strings.computerAndLaptops}</a></li>
-                                <li><a href={'/shop?type=cameras'}>{strings.cameras}</a></li>
-                                <li><a href={'/shop?type=hardware'}>{strings.hardware}</a></li>
-                                <li><a href={'/shop?type=phones'}>{strings.phones}</a></li>
-                                <li><a href={'/shop?type=tv'}>{strings.tv}</a></li>
-                                <li><a href={'/shop?type=strings.gadgets'}>{strings.gadgets}</a></li>
-                                <li><a href={'/shop?type=electronics'}>{strings.electronics}</a></li>
+                                {
+                                    Object.keys(this.state.categories).splice(0, 6).map((keyName, i) => {
+                                        if(keyName !=='allCategories')
+                                        return <li key={i}><a href={`/shop?category=${keyName}`}>{this.state.categories[keyName]}</a></li>
+                                    })
+                                }
                             </ul>
                         </div>
                     </div>
@@ -55,11 +57,11 @@ class Footer extends Component {
                     <div className="col-lg-2">
                         <div className="footer_column">
                             <ul className="footer_list footer_list_2">
-                                <li><a href={'/shop?type=consoles'}>{strings.consoles}</a></li>
-                                <li><a href={'/shop?type=accessories'}>{strings.accessories}</a></li>
-                                <li><a href={'/shop?type=cameras'}>{strings.cameras}</a></li>
-                                <li><a href={'/shop?type=hardware'}>{strings.hardware}</a></li>
-                                <li><a href={'/shop?type=laptop'}>{strings.computerAndLaptops}</a></li>
+                                {
+                                    Object.keys(this.state.categories).splice(6).map((keyName, i) => {
+                                        return <li key={i}><a href={`/shop?category=${keyName}`}>{this.state.categories[keyName]}</a></li>
+                                    })
+                                }
                             </ul>
                         </div>
                     </div>

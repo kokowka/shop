@@ -43,7 +43,8 @@ const GoodSchema = new mongoose.Schema({
     },
     'characteristics-en': Object,
     'characteristics-ru': Object,
-    'characteristics-ua': Object
+    'characteristics-ua': Object,
+    subcategory: String
 }, {toJSON: {getters: true}, timestamps: true, minimize: false});
 
 module.exports = mongoose.model('Good', GoodSchema);

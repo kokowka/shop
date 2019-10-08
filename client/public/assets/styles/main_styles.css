@@ -3590,3 +3590,11 @@ select option
 {
 	margin-right: 0;
 }
+
+.characteristics {
+	margin-top: 100px;
+}
+
+.custom_list {
+	width: 220px;
+}

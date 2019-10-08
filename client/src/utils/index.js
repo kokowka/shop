@@ -54,6 +54,11 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
+function makeSmallerStr(str, max) {
+    if(str.length > max) return str.split('').splice(0, max).join('') + '...';
+    return str;
+}
+
 export {
     getUrlParam,
     getSignCurrency,
@@ -62,5 +67,6 @@ export {
     getSignLanguage,
     isInWishList,
     isActiveWish,
-    onlyUnique
+    onlyUnique,
+    makeSmallerStr
 }

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import LocalizedStrings from 'react-localization';
 import localization from '../data/localization';
-import {exchangeByCurrentCurrency, getSignCurrency} from '../utils';
+import {exchangeByCurrentCurrency, getSignCurrency, makeSmallerStr} from '../utils';
 import axios from "axios";
 import Autosuggest from 'react-autosuggest'
 import {Helmet} from "react-helmet";
@@ -32,7 +32,6 @@ class Header extends Component {
             currencies[0] = currency;
         }
         strings.setLanguage(language);
-
         setInterval(this.updateStorageInfo, 1000);
         this.state = {
             exchangeValue: [],
@@ -50,7 +49,8 @@ class Header extends Component {
             bestProposition: [],
             brands: [],
             hideNavWelcome: false,
-            hideEmail: false
+            hideEmail: false,
+            categories: strings.category
         };
     }
 
@@ -281,15 +281,14 @@ class Header extends Component {
                                             />
                                                 <div onClick={this.showListOfCategory} className="custom_dropdown">
                                                     <div className="custom_dropdown_list">
-                                                        <span className="custom_dropdown_placeholder clc">{this.state.searchCategories[0]}</span>
+                                                        <span className="custom_dropdown_placeholder clc">{makeSmallerStr(this.state.searchCategories[0], 14)}</span>
                                                         <i className="fas fa-chevron-down"/>
                                                         <ul className="custom_list clc">
-                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[1]}</a></li>
-                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[2]}</a></li>
-                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[3]}</a></li>
-                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[4]}</a></li>
-                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[5]}</a></li>
-                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[6]}</a></li>
+                                                            {
+                                                                Object.keys(this.state.categories).map((keyName, i) => {
+                                                                    return <li id={i}><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.categories[keyName]}</a></li>
+                                                                })
+                                                            }
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -344,17 +343,12 @@ class Header extends Component {
                                     </div>
 
                                     <ul className="cat_menu">
-                                        <li><a href={'/shop?category=computerAndLaptops'}>{strings.computerAndLaptops} <i className="fas fa-chevron-right ml-auto"/></a></li>
-                                        <li><a href={'/shop?category=cameras'}>{strings.cameras}<i className="fas fa-chevron-right"/></a>
-                                        </li>
-                                        <li><a href={'/shop?category=hardware'}>{strings.hardware}<i className="fas fa-chevron-right"/></a>
-                                        </li>
-                                        <li><a href={'/shop?category=phones'}>{strings.phones}<i className="fas fa-chevron-right"/></a></li>
-                                        <li><a href={'/shop?category=tv'}>{strings.tv}<i className="fas fa-chevron-right"/></a></li>
-                                        <li><a href={'/shop?category=gadgets'}>{strings.gadgets}<i className="fas fa-chevron-right"/></a></li>
-                                        <li><a href={'/shop?category=electronics'}>{strings.electronics}<i className="fas fa-chevron-right"/></a></li>
-                                        <li><a href={'/shop?category=consoles'}>{strings.consoles}<i className="fas fa-chevron-right"/></a></li>
-                                        <li><a href={'/shop?category=accessories'}>{strings.accessories}<i className="fas fa-chevron-right"/></a></li>
+                                        {
+                                            Object.keys(this.state.categories).map((keyName, i) => {
+                                                if(keyName !=='allCategories')
+                                                return <li key={i}><a style={keyName==='sale' ? {color:'red', size: '20px', fontWeight: 'bold'}: {}} href={`/shop?category=${keyName}`}>{strings.category[keyName]} <i className="fas fa-chevron-right ml-auto"/></a></li>
+                                            })
+                                        }
                                     </ul>
                                 </div>
 

@@ -26,7 +26,9 @@ class AddGoods extends Component{
             color: '#000000',
             pictures: [],
             urls: [],
-            colors: []
+            colors: [],
+            categories: strings.category,
+            category: 'allCategories'
         }
     }
 
@@ -53,6 +55,7 @@ class AddGoods extends Component{
 
     addGoods = (e) =>{
         e.preventDefault();
+        const subcategory = document.getElementById('subcategory').value;
         const sizeOfCharacteristics = document.getElementById('characteristic').children.length / 2;
         const characteristics = {};
         const characteristicsRu = {};
@@ -81,6 +84,7 @@ class AddGoods extends Component{
             'characteristics-en': characteristics,
             'characteristics-ru': characteristicsRu,
             'characteristics-ua': characteristicsUa,
+            subcategory: subcategory
         }).then(res => {
             this.setState({
                 pictures: [],
@@ -141,6 +145,10 @@ class AddGoods extends Component{
         }
     };
 
+    setCategory = (e) => {
+        this.setState({category: e.target.value})
+    };
+
     render() {
         return <div className="super_container">
             <Helmet>
@@ -164,16 +172,12 @@ class AddGoods extends Component{
                                                required="required" data-error="Brand is required."/>
                                         <CompactPicker color={ this.state.color }
                                                        onChangeComplete={ this.handleColorChange }/>
-                                        <select className="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-                                            <option select="categories">{strings.categories}</option>
-                                            <option value="computerAndLaptops">{strings.computerAndLaptops}</option>
-                                            <option value="cameras">{strings.cameras}</option>
-                                            <option value="phones">{strings.phones}</option>
-                                            <option value="tv">{strings.tv}</option>
-                                            <option value="gadgets">{strings.gadgets}</option>
-                                            <option value="electronics">{strings.electronics}</option>
-                                            <option value="consoles">{strings.consoles}</option>
-                                            <option value="accessories">{strings.accessories}</option>
+                                        <select onChange={this.setCategory} className="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                                            {
+                                                Object.keys(this.state.categories).map((keyName, i) => {
+                                                    return <option key={i} value={keyName}>{this.state.categories[keyName]}</option>
+                                                })
+                                            }
                                         </select>
                                     </div>
                                     <div className="contact_form_text">
@@ -217,6 +221,7 @@ class AddGoods extends Component{
                                             <input type="text" className="contact_form_name input_field add_characteristic" placeholder="Value"/>
                                         </div>
                                     </div>
+                                    <input id={'subcategory'} style={this.state.category === 'accessoriesComputer' ? {}: {display: 'none'}} type="text" className="contact_form_name input_field" placeholder="Subcategories"/>
                                     <div className="contact_form_button">
                                         <button type="submit" className="button contact_submit_button">Add
                                         </button>

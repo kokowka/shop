@@ -20,7 +20,8 @@ class HeaderBanner extends Component{
                 img : ''
             },
             exchangeValue: [],
-            currency: currency
+            currency: currency,
+            language: language
         }
     }
 

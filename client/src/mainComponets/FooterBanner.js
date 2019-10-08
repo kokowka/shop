@@ -14,7 +14,7 @@ class FooterBanner extends Component {
         super(props);
         const language = localStorage.getItem('language') || 'Українська';
         if (!language) localStorage.setItem('language', 'Українська');
-        else strings.setLanguage(language);
+        strings.setLanguage(language);
         this.state = {
             sliderSettings:{
                 dots: false,
@@ -26,7 +26,8 @@ class FooterBanner extends Component {
                 autoplaySpeed: 3000,
                 autoplay: true,
             },
-            banners: []
+            banners: [],
+            language: language
         }
     }
 
