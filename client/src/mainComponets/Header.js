@@ -75,7 +75,7 @@ class Header extends Component {
     }
 
     resize = () => {
-        this.setState({hideNavWelcome: window.innerWidth <= 1200, hideEmail: window.innerWidth <= 770});
+        this.setState({hideNavWelcome: window.innerWidth <= 1200, hideEmail: window.innerWidth <= 1000});
     };
 
     updateStorageInfo = () => {
@@ -244,7 +244,7 @@ class Header extends Component {
                                 <div className="top_bar_user">
                                     <div className="user_icon"><img src="assets/images/user.svg" alt=""/></div>
                                     <div style={this.state.hideNavWelcome ? {display: 'none'}:{}}>{this.state.fullName ? `${strings.welcome}${this.state.fullName}`:<a href={'/register'}>{strings.register}</a>}</div>
-                                    <div style={{position: 'absolute', marginTop: '-15px'}}><a href={this.state.fullName ? '#':'/singIn'} onClick={this.state.fullName ? this.logout : ()=>{}}>{this.state.fullName ? strings.logOut : strings.singIn}</a></div>
+                                    <div><a href={this.state.fullName ? '#':'/singIn'} onClick={this.state.fullName ? this.logout : ()=>{}}>{this.state.fullName ? strings.logOut : strings.singIn}</a></div>
                                 </div>
                             </div>
                         </div>
