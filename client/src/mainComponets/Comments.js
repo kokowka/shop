@@ -10,7 +10,7 @@ class Comments extends Component{
 
     constructor(props){
         super(props);
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'Українська';
         strings.setLanguage(language);
         const fullName = localStorage.getItem('fullName') || '';
         const url = new URL(window.location.href);

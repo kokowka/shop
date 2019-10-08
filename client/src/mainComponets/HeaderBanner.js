@@ -11,9 +11,8 @@ class HeaderBanner extends Component{
 
     constructor(props) {
         super(props);
-        const language = localStorage.getItem('language');
-        if(!language) localStorage.setItem('language', 'Українська');
-        else strings.setLanguage(language);
+        const language = localStorage.getItem('language') || 'Українська';
+        strings.setLanguage(language);
         const currency = localStorage.getItem('currency');
         this.state = {
             banner: {

@@ -12,7 +12,7 @@ let strings = new LocalizedStrings(localization);
 class AddBanner extends Component {
     constructor(props){
         super(props);
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'Українська';
         strings.setLanguage(language);
         axios.post(`${process.env.REACT_APP_API_URL}/isAdmin`,{
             email: localStorage.getItem('email'),

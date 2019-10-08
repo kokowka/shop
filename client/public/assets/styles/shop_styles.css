@@ -2296,3 +2296,19 @@ select option
 	height: 115px;
 	object-fit: contain;
 }
+.filters {
+	position: relative;
+	margin-top: 20px;
+	max-width: 200px;
+}
+
+.filters .slick-dots {
+	margin-left: -40px;
+}
+
+.form-check-label {
+	color: #727b84;
+}
+.slick-track {
+	max-height: 25px;
+}

@@ -40,7 +40,10 @@ const GoodSchema = new mongoose.Schema({
     sold: {
         type: Number,
         default: 0
-    }
+    },
+    'characteristics-en': Object,
+    'characteristics-ru': Object,
+    'characteristics-ua': Object
 }, {toJSON: {getters: true}, timestamps: true, minimize: false});
 
 module.exports = mongoose.model('Good', GoodSchema);

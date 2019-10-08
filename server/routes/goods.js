@@ -130,10 +130,10 @@ async function setTimerForSuperProposition(req, res) {
     let query = {
         timerOfPropose: timer
     };
-    if(timer === 0) {
+    if(timer === 0 || timer < 0) {
         query['isSuperPropose'] = false;
     }
-    await Good.findOneAndUpdate({_id: req.body.id}, {$set: {timerOfPropose: req.body.timer}}, {upsert:true})
+    await Good.findOneAndUpdate({_id: req.body.id}, {$set: query}, {upsert:true})
         .then(result =>{res.json(result)})
         .catch(error => console.log(error))
 }

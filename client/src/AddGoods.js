@@ -13,7 +13,7 @@ let strings = new LocalizedStrings(localization);
 class AddGoods extends Component{
     constructor(props){
         super(props);
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'Українська';
         strings.setLanguage(language);
         axios.post(`${process.env.REACT_APP_API_URL}/isAdmin`,{
             email: localStorage.getItem('email'),
@@ -53,6 +53,21 @@ class AddGoods extends Component{
 
     addGoods = (e) =>{
         e.preventDefault();
+        const sizeOfCharacteristics = document.getElementById('characteristic').children.length / 2;
+        const characteristics = {};
+        const characteristicsRu = {};
+        const characteristicsUa = {};
+        for(let i = 0; i<sizeOfCharacteristics; i++) {
+            let key = document.getElementById('characteristic').children[i * 2].value;
+            let val = document.getElementById('characteristic').children[i * 2 + 1].value;
+            characteristics[key] = val;
+            key = document.getElementById('characteristic-ru').children[i * 2].value;
+            val = document.getElementById('characteristic-ru').children[i * 2 + 1].value;
+            characteristicsRu[key] = val;
+            key = document.getElementById('characteristic-ua').children[i * 2].value;
+            val = document.getElementById('characteristic-ua').children[i * 2 + 1].value;
+            characteristicsUa[key] = val;
+        }
         axios.post(`${process.env.REACT_APP_API_URL}/goods/create`, {
             name: e.target[0].value,
             brand: e.target[1].value,
@@ -62,15 +77,75 @@ class AddGoods extends Component{
             'description-en': e.target[11].value,
             'description-ru': e.target[12].value,
             'description-ua': e.target[13].value,
-            imgs: this.state.urls
-        }).then(res => window.location.href = '/')
+            imgs: this.state.urls,
+            'characteristics-en': characteristics,
+            'characteristics-ru': characteristicsRu,
+            'characteristics-ua': characteristicsUa,
+        }).then(res => {
+            this.setState({
+                pictures: [],
+                urls: [],
+                colors: []
+        }); console.log('Added one Good', res)})
             .catch(error => console.log(error))
+    };
+
+    addCharacteristic= () => {
+        const nodeKey1 = document.createElement('input');
+        const nodeKey2 = document.createElement('input');
+        const nodeKey3 = document.createElement('input');
+        const characteristic = document.getElementById('characteristic');
+        const characteristicRu = document.getElementById('characteristic-ru');
+        const characteristicUa = document.getElementById('characteristic-ua');
+        nodeKey1.setAttribute('type', 'text');
+        nodeKey1.setAttribute('class', 'contact_form_name input_field');
+        nodeKey1.placeholder = 'Key';
+        nodeKey2.setAttribute('type', 'text');
+        nodeKey2.setAttribute('class', 'contact_form_name input_field');
+        nodeKey2.placeholder = 'Key';
+        nodeKey3.setAttribute('type', 'text');
+        nodeKey3.setAttribute('class', 'contact_form_name input_field');
+        nodeKey3.placeholder = 'Key';
+        characteristic.appendChild(nodeKey1);
+        characteristicRu.appendChild(nodeKey2);
+        characteristicUa.appendChild(nodeKey3);
+        const nodeValue1 = document.createElement('input');
+        const nodeValue2 = document.createElement('input');
+        const nodeValue3 = document.createElement('input');
+        nodeValue1.type = 'text';
+        nodeValue1.className += 'contact_form_name input_field add_characteristic';
+        nodeValue1.placeholder = 'Value';
+        nodeValue2.type = 'text';
+        nodeValue2.className += 'contact_form_name input_field add_characteristic';
+        nodeValue2.placeholder = 'Value';
+        nodeValue3.type = 'text';
+        nodeValue3.className += 'contact_form_name input_field add_characteristic';
+        nodeValue3.placeholder = 'Value';
+        characteristic.appendChild(nodeValue1);
+        characteristicRu.appendChild(nodeValue2);
+        characteristicUa.appendChild(nodeValue3);
+    };
+
+    minusCharacteristic = () => {
+        const characteristic = document.getElementById('characteristic');
+        const characteristicRu = document.getElementById('characteristic-ru');
+        const characteristicUa = document.getElementById('characteristic-ua');
+        const length = characteristic.childNodes.length;
+        if(length !==0) {
+            characteristic.removeChild(characteristic.childNodes[length - 1]);
+            characteristic.removeChild(characteristic.childNodes[length - 2]);
+            characteristicRu.removeChild(characteristicRu.childNodes[length - 1]);
+            characteristicRu.removeChild(characteristicRu.childNodes[length - 2]);
+            characteristicUa.removeChild(characteristicUa.childNodes[length - 1]);
+            characteristicUa.removeChild(characteristicUa.childNodes[length - 2]);
+        }
     };
 
     render() {
         return <div className="super_container">
             <Helmet>
                 <link rel="stylesheet" type="text/css" href="assets/styles/contact_styles.css"/>
+                <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet"/>
             </Helmet>
             <Header/>
             <div className="contact_form">
@@ -83,11 +158,9 @@ class AddGoods extends Component{
                                 <form onSubmit={this.addGoods} id="contact_form">
                                     <div
                                         className="contact_form_inputs d-flex flex-md-row flex-column justify-content-between align-items-between">
-                                        <input type="text" id="contact_form_name"
-                                               className="contact_form_name input_field" placeholder="Name"
+                                        <input type="text" className="contact_form_name input_field" placeholder="Name"
                                                required="required" data-error="Name is required."/>
-                                        <input type="text" id="contact_form_name"
-                                               className="contact_form_name input_field" placeholder="Brand"
+                                        <input type="text" className="contact_form_name input_field" placeholder="Brand"
                                                required="required" data-error="Brand is required."/>
                                         <CompactPicker color={ this.state.color }
                                                        onChangeComplete={ this.handleColorChange }/>
@@ -124,6 +197,25 @@ class AddGoods extends Component{
                                         <textarea id="contact_form_message" className="text_field contact_form_message"
                                                   name="description-ua" rows="4" placeholder="Опис" required="required"
                                                   data-error="Please, write us a message."/>
+                                        <h3>Characteristics</h3>
+                                        <div id={'characteristic'}>
+                                            <input type="text" className="contact_form_name input_field" placeholder="Key"/>
+                                            <input type="text" className="contact_form_name input_field add_characteristic" placeholder="Value"/>
+                                        </div>
+                                        <span onClick={this.addCharacteristic} className="glyphicon glyphicon-plus" style={{marginLeft: '20px'}}/>
+                                        <span onClick={this.minusCharacteristic} className="glyphicon glyphicon-minus" style={{marginLeft: '20px'}}/>
+
+                                        <h3>Характеристика(Ru)</h3>
+                                        <div id={'characteristic-ru'}>
+                                            <input type="text" className="contact_form_name input_field" placeholder="Key"/>
+                                            <input type="text" className="contact_form_name input_field add_characteristic" placeholder="Value"/>
+                                        </div>
+
+                                        <h3>Характеристика</h3>
+                                        <div id={'characteristic-ua'}>
+                                            <input type="text" className="contact_form_name input_field" placeholder="Key"/>
+                                            <input type="text" className="contact_form_name input_field add_characteristic" placeholder="Value"/>
+                                        </div>
                                     </div>
                                     <div className="contact_form_button">
                                         <button type="submit" className="button contact_submit_button">Add

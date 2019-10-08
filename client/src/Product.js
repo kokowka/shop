@@ -16,7 +16,7 @@ class Product extends Component{
         super(props);
         const url = new URL(window.location.href);
         const id = url.searchParams.get("id");
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'Українська';
         const currency = localStorage.getItem('currency');
         strings.setLanguage(language);
         const wishList = JSON.parse(localStorage.getItem('wishList')) || [];

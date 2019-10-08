@@ -12,7 +12,7 @@ let strings = new LocalizedStrings(localization);
 class WishList extends Component {
     constructor(props) {
         super(props);
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'Українська';
         const wishList = JSON.parse(localStorage.getItem('wishList')) || [];
         if(wishList.length === 0) window.location.href = '/shop';
         const currency = localStorage.getItem('currency');

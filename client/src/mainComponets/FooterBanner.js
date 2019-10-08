@@ -12,7 +12,7 @@ class FooterBanner extends Component {
 
     constructor(props) {
         super(props);
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'Українська';
         if (!language) localStorage.setItem('language', 'Українська');
         else strings.setLanguage(language);
         this.state = {

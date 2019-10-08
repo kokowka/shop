@@ -63,7 +63,8 @@
     "comments": "Comments",
     "leaveComment": "Leave a Comment",
     "fullName": "Full Name",
-    "send": "Send"
+    "send": "Send",
+    "notFound": "Product not found"
   },
   "Русский": {
     "categories" : "Категории",
@@ -129,7 +130,8 @@
     "comments": "Комментарии",
     "leaveComment": "Оставить Комментарий",
     "fullName": "Имя",
-    "send": "Отправлять"
+    "send": "Отправлять",
+    "notFound": "Товар не найден"
   },
   "Українська": {
     "categories": "Категорії",
@@ -195,6 +197,7 @@
     "comments": "Коментарі",
     "leaveComment": "Залишити Коментар",
     "fullName": "Ім'я",
-    "send": "Надіслати"
+    "send": "Надіслати",
+    "notFound": "Товар не знайдено"
   }
 }

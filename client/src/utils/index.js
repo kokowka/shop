@@ -50,6 +50,10 @@ function isActiveWish(wishArr, currentGoods) {
     return isActiveWish
 }
 
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
 export {
     getUrlParam,
     getSignCurrency,
@@ -57,5 +61,6 @@ export {
     exchangeByCurrentCurrency,
     getSignLanguage,
     isInWishList,
-    isActiveWish
+    isActiveWish,
+    onlyUnique
 }

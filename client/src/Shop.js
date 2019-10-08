@@ -10,7 +10,16 @@ import {Link} from "react-router-dom";
 import { CirclePicker } from 'react-color';
 import {Range} from 'rc-slider';
 import 'rc-slider/dist/rc-slider.css';
-import {getUrlParam, getSignCurrency, roundPriceWithDiscount, exchangeByCurrentCurrency, isInWishList, isActiveWish} from './utils';
+import {
+    getUrlParam,
+    getSignCurrency,
+    roundPriceWithDiscount,
+    exchangeByCurrentCurrency,
+    isInWishList,
+    isActiveWish,
+    onlyUnique,
+    getSignLanguage
+} from './utils';
 import Slider from "react-slick";
 
 let strings = new LocalizedStrings(localization);
@@ -18,7 +27,7 @@ let strings = new LocalizedStrings(localization);
 class Shop extends Component {
     constructor(props) {
         super(props);
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'Українська';
         const currency = localStorage.getItem('currency');
         strings.setLanguage(language);
         this.state = {
@@ -50,8 +59,24 @@ class Shop extends Component {
                 slidesToShow: 4,
                 slidesToScroll: 2,
                 autoplaySpeed: 3000,
-                autoplay: true
-            }
+                autoplay: true,
+            },
+            sliderFilterSetting: {
+                arrow: false,
+                dots: true,
+                infinite: false,
+                vertical: true,
+                verticalSwiping: true,
+                speed: 500,
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                copy:false,
+                autoplaySpeed: 9000
+            },
+            filters: {},
+            checkedFiler: {},
+            language: language,
+            characteristics: ''
         }
     }
 
@@ -65,7 +90,19 @@ class Shop extends Component {
                 const current = this.getCurrentGoods(res.data, this.state.activePage);
                 const range = this.getPriceRange(res.data);
                 const sorted = res.data.sort(this.sortByRate);
-                this.setState({goods: sorted, currentGoods: current, isActive: isActiveWish(this.state.isActive,current), goodsByFilter: sorted, volume: range, min: range[0], max: range[1]});
+                let filters = [];
+                const characteristics = `characteristics-${getSignLanguage(this.state.language)}`;
+                if(category){
+                    filters = res.data.filter((value => value[characteristics] && JSON.stringify(value[characteristics]) !== JSON.stringify({})))
+                        .reduce((obj, item) => {
+                            for(let key in item[characteristics]) {
+                                if (!obj[key]) obj[key] = [item[characteristics][key]];
+                                else obj[key] = obj[key].concat(item[characteristics][key]).filter(onlyUnique)
+                            }
+                            return obj;
+                        }, {});
+                }
+                this.setState({goods: sorted, currentGoods: current, isActive: isActiveWish(this.state.isActive,current), goodsByFilter: sorted, volume: range, min: range[0], max: range[1], filters: filters, characteristics: characteristics});
             })
             .catch(err => console.log(err));
         axios.get(`${process.env.REACT_APP_API_URL}/getBestGoods?size=10`)
@@ -74,7 +111,7 @@ class Shop extends Component {
         axios.get(`${process.env.REACT_APP_API_URL}/getAll?type=colors`)
             .then(res => this.setState({colors: res.data.result}))
             .catch(err => console.log(err));
-        axios.get(`${process.env.REACT_APP_API_URL}/getAll?type=brand'`)
+        axios.get(`${process.env.REACT_APP_API_URL}/getAll?type=brand`)
             .then(res => this.setState({brands: res.data.result}))
             .catch(err => console.log(err));
         axios.get('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11')
@@ -173,7 +210,7 @@ class Shop extends Component {
 
     setFiltersForCurrentGoods = () => {
         const goods = this.state.goods;
-        const filtered = goods.filter(this.filterByColor).filter(this.filterByRangePrice);
+        const filtered = goods.filter(this.filterByColor).filter(this.filterByRangePrice).filter(this.filterByCharacteristics);
         this.setState({goodsByFilter: filtered, currentGoods: this.getCurrentGoods(filtered, 1), activePage: 1});
     };
 
@@ -205,6 +242,44 @@ class Shop extends Component {
             sorted = goods.sort(this.sortByPrice);
         }
         this.setState({goodsByFilter: sorted, currentGoods: this.getCurrentGoods(sorted, 1), activePage: 1});
+    };
+
+    selectFilter = (e) => {
+        const checked = e.target.checked;
+        const value = e.target.parentElement.innerText;
+        const key = e.target.parentElement.getAttribute('value');
+
+        const checkedFilter = this.state.checkedFiler;
+
+        if(checked){
+            if(!checkedFilter[key])
+                checkedFilter[key] = [value];
+            else checkedFilter[key].push(value);
+        } else {
+            if(checkedFilter[key] && checkedFilter[key].length === 1)
+                delete checkedFilter[key];
+            else {
+                const index = checkedFilter[key].indexOf(value);
+                checkedFilter[key].splice(index, 1);
+            }
+        }
+        this.setState({checkedFilter: checkedFilter}, ()=>{
+            const filtered = this.state.goods.filter(this.filterByCharacteristics);
+            this.setState({goodsByFilter: filtered, currentGoods: this.getCurrentGoods(filtered, 1), activePage: 1});
+        });
+    };
+
+    filterByCharacteristics = (value) => {
+        const checkedFilter = this.state.checkedFilter;
+        const characteristics = `characteristics-${getSignLanguage(this.state.language)}`;
+        if(JSON.stringify(checkedFilter) === JSON.stringify({})) return true;
+        for(let key in checkedFilter) {
+            for(let i = 0; i<checkedFilter[key].length; i++){
+                if(value[characteristics] && value[characteristics][key] === checkedFilter[key][i])
+                    return true;
+            }
+        }
+        return false;
     };
 
     sortByRate = (a, b) => b.rate['$numberDecimal'] - a.rate['$numberDecimal'];
@@ -273,6 +348,21 @@ class Shop extends Component {
                                     <CirclePicker colors={ this.state.colors }
                                                   onSwatchHover={ this.handleColorChange }/>
                                 </div>
+                                    {Object.keys(this.state.filters).map((keyName, i) => {
+                                        return <div key={i} className={'filters'}>
+                                            <h4>{keyName}</h4>
+                                            <Slider {...this.state.sliderFilterSetting}>
+                                                {this.state.filters[keyName].map((value, key) => {
+                                                    return <div value={keyName} key={key} className="form-check">
+                                                        <input onChange={this.selectFilter} className="form-check-input" type="checkbox" value=""/>
+                                                        <label className="form-check-label" htmlFor="defaultCheck1">
+                                                            {value}
+                                                        </label>
+                                                    </div>
+                                                })}
+                                            </Slider>
+                                        </div>
+                                    })}
                                 <div className="sidebar_section">
                                     <div className="sidebar_subtitle brands_subtitle">Brands</div>
                                     <ul className="brands_list">
@@ -308,6 +398,9 @@ class Shop extends Component {
 
                             <div className="product_grid">
                                 <div className="product_grid_border"/>
+                                    <div style={this.state.goodsByFilter.length !== 0 ? {display: 'none'} : {}}>
+                                        <h3 style={{fontWeight: 'bold'}}>{strings.notFound}</h3>
+                                    </div>
                                 {this.state.currentGoods.map((value, key) => {
                                     return <div key={key} value={key} className={`product_item${value.isNewGood ? ` is_new`:``}${value.discount === 0 ? ``:` discount`}`}>
                                             <div className="product_border"/>

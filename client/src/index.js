@@ -12,6 +12,7 @@ import WishList from './WishList';
 import Shop from './Shop';
 import AddBanner from './AddBanner';
 import UpdateGoods from './UpdateGoods';
+import NotFound from './NotFound';
 
 const routing = (
     <Router>
@@ -27,6 +28,7 @@ const routing = (
             <Route path={"/wishList"} component={WishList}/>
             <Route path={"/shop"} component={Shop}/>
             <Route path={"/update"} component={UpdateGoods}/>
+            <Route path="*" component={NotFound} />
         </Switch>
     </Router>
 );

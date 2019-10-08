@@ -11,7 +11,7 @@ let strings = new LocalizedStrings(localization);
 class Contact extends Component {
     constructor(props) {
         super(props);
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'Українська';
         strings.setLanguage(language);
     }
 

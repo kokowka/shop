@@ -13,7 +13,7 @@ class Cart extends Component {
     constructor(props) {
         super(props);
         if(!localStorage.getItem('fullName')) window.location.href = '/register';
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'Українська';
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         if(cart.length === 0) window.location.href = '/shop';
         const currency = localStorage.getItem('currency');

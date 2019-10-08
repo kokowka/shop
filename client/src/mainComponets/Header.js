@@ -12,19 +12,17 @@ class Header extends Component {
 
     constructor(props) {
         super(props);
-        const language = localStorage.getItem('language') || 'Українська';
+        const language = localStorage.getItem('language') || 'Українська' || 'Українська';
         const fullName = localStorage.getItem('fullName');
         let languages = ["Українська", "Русский", "English"];
         let currencies = ["₴ Гривня", "₽ Рубль", "$ US dollar"];
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
         const wishList = JSON.parse(localStorage.getItem('wishList')) || [];
-        if(!language) localStorage.setItem('language', 'Українська');
-        else {
-            const indexOfValue = languages.indexOf(language);
-            const firstLanguage = languages[0];
-            languages[indexOfValue] = firstLanguage;
-            languages[0] = language;
-        }
+        const indexOfValue = languages.indexOf(language);
+        const firstLanguage = languages[0];
+        languages[indexOfValue] = firstLanguage;
+        languages[0] = language;
+
         let currency = localStorage.getItem('currency');
         if(!currency) localStorage.setItem('currency', '₴ Гривня');
         else {
@@ -50,7 +48,9 @@ class Header extends Component {
             searchValue: '',
             category: '',
             bestProposition: [],
-            brands: []
+            brands: [],
+            hideNavWelcome: false,
+            hideEmail: false
         };
     }
 
@@ -70,7 +70,13 @@ class Header extends Component {
                  this.setState({brands: result.data.result.slice(0, 5)});
              })
              .catch(error => console.log(error));
+         window.addEventListener("resize", this.resize);
+         this.resize();
     }
+
+    resize = () => {
+        this.setState({hideNavWelcome: window.innerWidth <= 1200, hideEmail: window.innerWidth <= 770});
+    };
 
     updateStorageInfo = () => {
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -213,7 +219,7 @@ class Header extends Component {
                                 <div className="top_bar_icon"><img src="assets/images/phone.png" alt=""/></div>
                                 +380930559464
                             </div>
-                            <div className="top_bar_contact_item">
+                            <div style={this.state.hideEmail ? {display: 'none'}:{}} className="top_bar_contact_item">
                                 <div className="top_bar_icon"><img src="assets/images/mail.png" alt=""/></div>
                                 <a href={"mailto:bazarchick.shop@yahoo.com"}>bazarchick.shop@yahoo.com</a></div>
                             <div className="top_bar_content ml-auto">
@@ -237,8 +243,8 @@ class Header extends Component {
                                 </div>
                                 <div className="top_bar_user">
                                     <div className="user_icon"><img src="assets/images/user.svg" alt=""/></div>
-                                    <div>{this.state.fullName ? `${strings.welcome}${this.state.fullName}`:<a href={'/register'}>{strings.register}</a>}</div>
-                                    <div><a href={this.state.fullName ? '/#':'/singIn'} onClick={this.state.fullName ? this.logout : ()=>{}}>{this.state.fullName ? strings.logOut : strings.singIn}</a></div>
+                                    <div style={this.state.hideNavWelcome ? {display: 'none'}:{}}>{this.state.fullName ? `${strings.welcome}${this.state.fullName}`:<a href={'/register'}>{strings.register}</a>}</div>
+                                    <div style={{position: 'absolute', marginTop: '-15px'}}><a href={this.state.fullName ? '#':'/singIn'} onClick={this.state.fullName ? this.logout : ()=>{}}>{this.state.fullName ? strings.logOut : strings.singIn}</a></div>
                                 </div>
                             </div>
                         </div>
@@ -278,12 +284,12 @@ class Header extends Component {
                                                         <span className="custom_dropdown_placeholder clc">{this.state.searchCategories[0]}</span>
                                                         <i className="fas fa-chevron-down"/>
                                                         <ul className="custom_list clc">
-                                                            <li><a href={"/#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[1]}</a></li>
-                                                            <li><a href={"/#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[2]}</a></li>
-                                                            <li><a href={"/#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[3]}</a></li>
-                                                            <li><a href={"/#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[4]}</a></li>
-                                                            <li><a href={"/#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[5]}</a></li>
-                                                            <li><a href={"/#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[6]}</a></li>
+                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[1]}</a></li>
+                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[2]}</a></li>
+                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[3]}</a></li>
+                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[4]}</a></li>
+                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[5]}</a></li>
+                                                            <li><a href={"#"} onClick={this.onClickSearchCategories} className="clc">{this.state.searchCategories[6]}</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
