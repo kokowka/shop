@@ -25,7 +25,7 @@ class HeaderBanner extends Component{
     }
 
     componentDidMount() {
-        axios.get(`${process.env.REACT_APP_API_URL}/getBannerByType?type=header`)
+        axios.post(`/getBannerByType?type=header`)
             .then(res => {if(res.data[0]) this.setState({banner: res.data[0]})})
             .catch(error => console.log(error));
         axios.get('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11')

@@ -60,7 +60,7 @@ class Cart extends Component {
     };
 
     makeOrder = () => {
-        axios.post(`${process.env.REACT_APP_API_URL}/sendEmail`, {
+        axios.post(`/sendEmail`, {
             subject: 'New order',
             html: `${JSON.stringify(this.state.cart)} ${localStorage.getItem('phone')} ${localStorage.getItem('email')}`
         });

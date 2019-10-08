@@ -43,7 +43,7 @@ class Product extends Component{
 
 
     componentDidMount() {
-        axios.get(`${process.env.REACT_APP_API_URL}/goods/`+this.state.id)
+        axios.post(`/goods/`+this.state.id)
             .then((res) => this.setState({
                 good: res.data,
                 mainImg: res.data.imgs[this.state.indexOfColors * 3],
@@ -89,13 +89,13 @@ class Product extends Component{
     changeRating = rating => {
         const isVoting = localStorage.getItem(`vote${this.state.id}`);
         if(!isVoting) {
-            axios.put(`${process.env.REACT_APP_API_URL}/goods/updateRating`, {id: this.state.id, rating: rating})
+            axios.put(`/goods/updateRating`, {id: this.state.id, rating: rating})
                 .then((res) => {
                     localStorage.setItem(`vote${this.state.id}`, 'vote');
                     res.data.rating.push(rating);
                     const rate = this.getRating(res.data.rating);
                     this.setState({rating: rate});
-                    axios.put(`${process.env.REACT_APP_API_URL}/goods/updateRate`, {id: this.state.id, rate: rate});
+                    axios.put(`/goods/updateRate`, {id: this.state.id, rate: rate});
                 })
                 .catch(error => console.log(error));
         }

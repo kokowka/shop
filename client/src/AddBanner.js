@@ -14,7 +14,7 @@ class AddBanner extends Component {
         super(props);
         const language = localStorage.getItem('language') || 'Українська';
         strings.setLanguage(language);
-        axios.post(`${process.env.REACT_APP_API_URL}/isAdmin`,{
+        axios.post(`/isAdmin`,{
             email: localStorage.getItem('email'),
             fullName: localStorage.getItem('fullName')
         }).then(res => {
@@ -46,7 +46,7 @@ class AddBanner extends Component {
 
     addBanner = (e) =>{
         e.preventDefault();
-        axios.post(`${process.env.REACT_APP_API_URL}/createBanner`, {
+        axios.post(`/createBanner`, {
             name: e.target[0].value,
             idOfProduct: e.target[1].value,
             type: e.target[2].value,

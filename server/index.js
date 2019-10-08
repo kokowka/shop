@@ -5,6 +5,7 @@ const cors = require('cors');
 const logger = require('morgan');
 const routes = require('./routes');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,15 @@ let db = mongoose.connection;
 db.once('open', () => console.log('Connected to the database'));
 // checks if connection with the database is successful
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+let dir = `${__dirname}`.split('/');
+dir.pop();
+dir.push('client');
+dir.push('build');
+dir = dir.join('/');
+app.use(express.static(dir));
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(dir, 'index.html'));
+});
 
 app.use(logger('dev'));
 app.use(bodyParser.json());

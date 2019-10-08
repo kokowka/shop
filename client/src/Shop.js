@@ -84,8 +84,8 @@ class Shop extends Component {
         const category = getUrlParam(window.location.href, 'category');
         const brand = getUrlParam(window.location.href, 'brand');
         const name = getUrlParam(window.location.href, 'name');
-        const url = `${process.env.REACT_APP_API_URL}/goods/getAllGoods?${brand ? `brand=${brand}`: ``}${category ? `category=${category}`: ``}${name ?`&name=${name}`:``}`;
-        axios.get(url)
+        const url = `/goods/getAllGoods?${brand ? `brand=${brand}`: ``}${category ? `category=${category}`: ``}${name ?`&name=${name}`:``}`;
+        axios.post(url)
             .then(res => {
                 const current = this.getCurrentGoods(res.data, this.state.activePage);
                 const range = this.getPriceRange(res.data);
@@ -105,13 +105,13 @@ class Shop extends Component {
                 this.setState({goods: sorted, currentGoods: current, isActive: isActiveWish(this.state.isActive,current), goodsByFilter: sorted, volume: range, min: range[0], max: range[1], filters: filters, characteristics: characteristics});
             })
             .catch(err => console.log(err));
-        axios.get(`${process.env.REACT_APP_API_URL}/getBestGoods?size=10`)
+        axios.post(`/getBestGoods?size=10`)
             .then(res => this.setState({bestGoods: res.data}))
             .catch(err => console.log(err));
-        axios.get(`${process.env.REACT_APP_API_URL}/getAll?type=colors`)
+        axios.post(`/getAll?type=colors`)
             .then(res => this.setState({colors: res.data.result}))
             .catch(err => console.log(err));
-        axios.get(`${process.env.REACT_APP_API_URL}/getAll?type=brand`)
+        axios.post(`/getAll?type=brand`)
             .then(res => this.setState({brands: res.data.result}))
             .catch(err => console.log(err));
         axios.get('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11')

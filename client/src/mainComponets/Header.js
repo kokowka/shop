@@ -60,12 +60,12 @@ class Header extends Component {
                 this.setState({exchangeValue: result.data})
             })
             .catch(error => console.log(error));
-        axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods`)
+        axios.post(`/goods/getAllGoods`)
             .then(result => {
                 this.setState({goods: result.data, bestProposition: result.data.slice(0, 5)})
             })
             .catch(error => console.log(error));
-         axios.get(`${process.env.REACT_APP_API_URL}/getAll?type=brand`)
+         axios.post(`/getAll?type=brand`)
              .then(result => {
                  this.setState({brands: result.data.result.slice(0, 5)});
              })
@@ -124,23 +124,23 @@ class Header extends Component {
       const current = e.currentTarget.textContent;
       const indexOf = searchCategories.indexOf(current);
       if(indexOf === 2 || indexOf === 3) {
-          axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods?category=computerAndLaptops`)
+          axios.post(`/goods/getAllGoods?category=computerAndLaptops`)
               .then(result => this.setState({goods: result.data, category: 'computerAndLaptops'}))
               .catch(error => console.log(error));
       } else if(indexOf === 4) {
-          axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods?category=cameras`)
+          axios.post(`/goods/getAllGoods?category=cameras`)
               .then(result => this.setState({goods: result.data, category: 'cameras'}))
               .catch(error => console.log(error));
       } else if(indexOf === 5) {
-          axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods?category=hardware`)
+          axios.post(`/goods/getAllGoods?category=hardware`)
               .then(result => this.setState({goods: result.data, category: 'hardware'}))
               .catch(error => console.log(error));
       } else if(indexOf === 6) {
-          axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods?category=phones`)
+          axios.post(`/goods/getAllGoods?category=phones`)
               .then(result => this.setState({goods: result.data, category: 'phones'}))
               .catch(error => console.log(error));
       } else {
-          axios.get(`${process.env.REACT_APP_API_URL}/goods/getAllGoods`)
+          axios.post(`/goods/getAllGoods`)
               .then(result => this.setState({goods: result.data, category: ''}))
               .catch(error => console.log(error));
       }

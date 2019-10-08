@@ -15,7 +15,7 @@ class AddGoods extends Component{
         super(props);
         const language = localStorage.getItem('language') || 'Українська';
         strings.setLanguage(language);
-        axios.post(`${process.env.REACT_APP_API_URL}/isAdmin`,{
+        axios.post(`/isAdmin`,{
             email: localStorage.getItem('email'),
             fullName: localStorage.getItem('fullName')
         }).then(res => {
@@ -68,7 +68,7 @@ class AddGoods extends Component{
             val = document.getElementById('characteristic-ua').children[i * 2 + 1].value;
             characteristicsUa[key] = val;
         }
-        axios.post(`${process.env.REACT_APP_API_URL}/goods/create`, {
+        axios.post(`/goods/create`, {
             name: e.target[0].value,
             brand: e.target[1].value,
             colors: this.state.colors,

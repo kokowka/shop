@@ -13,7 +13,7 @@ class UpdateGoods extends Component{
         super(props);
         const language = localStorage.getItem('language') || 'Українська';
         strings.setLanguage(language);
-        axios.post(`${process.env.REACT_APP_API_URL}/isAdmin`,{
+        axios.post(`/isAdmin`,{
             email: localStorage.getItem('email'),
             fullName: localStorage.getItem('fullName')
         }).then(res => {
@@ -32,7 +32,7 @@ class UpdateGoods extends Component{
         const timerOfPropose = e.target[5].value || 0;
         const available = e.target[6].value || 0;
         const sold = e.target[7].value || 0;
-        axios.put(`${process.env.REACT_APP_API_URL}/updateOrDeleteGood`, {
+        axios.put(`/updateOrDeleteGood`, {
             updateOrDelete: updateOrDelete,
             id: id,
             discount: discount,

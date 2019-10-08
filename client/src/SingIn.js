@@ -19,7 +19,7 @@ class SingIn extends Component {
             isErrorEmail: false,
             isErrorPassword: false
         });
-        axios.post(`${process.env.REACT_APP_API_URL}/login`, {
+        axios.post(`/login`, {
             email: e.target[0].value,
             password: e.target[1].value
         }).then(res => {
