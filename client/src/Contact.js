@@ -12,7 +12,14 @@ class Contact extends Component {
     constructor(props) {
         super(props);
         const language = localStorage.getItem('language') || 'Українська';
+        this.state = {
+            isLoading: true
+        };
         strings.setLanguage(language);
+    }
+
+    componentDidMount() {
+        setTimeout(() =>this.setState({isLoading: false}), 400)
     }
 
     sendMessage = (e) => {
@@ -30,7 +37,7 @@ class Contact extends Component {
     };
 
     render() {
-        return <div className="super_container">
+        return <div style={this.state.isLoading? {display: 'none'} : {}} className="super_container">
             <Helmet>
                 <title>{strings.contact}</title>
                 <link rel="stylesheet" type="text/css" href="assets/styles/contact_styles.css"/>

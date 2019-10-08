@@ -58,6 +58,7 @@ class MainPage extends Component {
             currentGoodsDot: 1,
             currentFeatured: 0,
             isActive: [],
+            isLoading: true
         };
     }
 
@@ -72,6 +73,7 @@ class MainPage extends Component {
             .catch(error => console.log(error));
         axios.post(`/getBestGoods?size=20`)
             .then(res => this.setState({goods: res.data, isActive: isActiveWish(this.state.isActive, res.data)}))
+        setTimeout(() =>this.setState({isLoading: false}), 400)
     }
 
     updateTimerOfSuperPropose = () => {
@@ -183,7 +185,7 @@ class MainPage extends Component {
     };
 
     render() {
-        return <div className="super_container">
+        return <div style={this.state.isLoading? {display: 'none'} : {}} className="super_container">
             <Helmet>
                 <link rel="stylesheet" type="text/css" href="assets/styles/main_styles.css"/>
             </Helmet>

@@ -26,7 +26,8 @@ class WishList extends Component {
                 "$ US dollar": "$"
             },
             exchangeValue: [],
-            hideNav: false
+            hideNav: false,
+            isLoading: true
         }
     }
 
@@ -37,6 +38,7 @@ class WishList extends Component {
             })
         window.addEventListener("resize", this.resize);
         this.resize();
+        setTimeout(() =>this.setState({isLoading: false}), 400)
     }
 
     resize = () => {
@@ -53,7 +55,7 @@ class WishList extends Component {
 
 
     render() {
-        return <div className="super_container">
+        return <div style={this.state.isLoading? {display: 'none'} : {}} className="super_container">
             <Helmet>
                 <title>{strings.wishList}</title>
                 <link rel="stylesheet" type="text/css" href="assets/styles/cart_styles.css"/>

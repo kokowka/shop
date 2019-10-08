@@ -36,7 +36,8 @@ class Product extends Component{
             mainColor: '',
             indexOfColors: indexOfColor,
             rating: 0,
-            isInWishList: isInWishList(wishList, id)
+            isInWishList: isInWishList(wishList, id),
+            isLoading: true
         }
 
     }
@@ -56,6 +57,7 @@ class Product extends Component{
                 this.setState({exchangeValue: result.data})
             })
             .catch(error => console.log(error));
+        setTimeout(() =>this.setState({isLoading: false}), 400)
     }
 
     onImgClick = e => {
@@ -144,7 +146,7 @@ class Product extends Component{
 
 
     render() {
-        return <div className="super_container">
+        return <div style={this.state.isLoading? {display: 'none'} : {}} className="super_container">
             <Helmet>
                 <title>{this.state.good.name}</title>
                 <link rel="stylesheet" type="text/css" href="assets/styles/product_styles.css"/>

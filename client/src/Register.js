@@ -10,8 +10,13 @@ class Register extends Component {
         this.state = {
             isErrorEmail: false,
             isErrorPassword: false,
-            isErrorPhone: false
+            isErrorPhone: false,
+            isLoading: true
         }
+    }
+
+    componentDidMount() {
+        setTimeout(() =>this.setState({isLoading: false}), 400)
     }
 
     register = (e) => {
@@ -42,7 +47,7 @@ class Register extends Component {
     };
 
     render() {
-        return <div className="super_container">
+        return <div style={this.state.isLoading? {display: 'none'} : {}} className="super_container">
             <Helmet>
                 <link rel="stylesheet" type="text/css" href="assets/styles/contact_styles.css"/>
                 <link rel="stylesheet" type="text/css" href="assets/styles/register.css"/>

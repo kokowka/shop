@@ -74,9 +74,10 @@ class Shop extends Component {
                 autoplaySpeed: 9000
             },
             filters: {},
-            checkedFiler: {},
+            checkedFilter: {},
             language: language,
-            characteristics: ''
+            characteristics: '',
+            isLoading: true
         }
     }
 
@@ -119,6 +120,7 @@ class Shop extends Component {
                 this.setState({exchangeValue: result.data})
             })
             .catch(error => console.log(error));
+        setTimeout(() =>this.setState({isLoading: false}), 400)
     }
 
 
@@ -249,7 +251,7 @@ class Shop extends Component {
         const value = e.target.parentElement.innerText;
         const key = e.target.parentElement.getAttribute('value');
 
-        const checkedFilter = this.state.checkedFiler;
+        const checkedFilter = this.state.checkedFilter;
 
         if(checked){
             if(!checkedFilter[key])
@@ -264,7 +266,7 @@ class Shop extends Component {
             }
         }
         this.setState({checkedFilter: checkedFilter}, ()=>{
-            const filtered = this.state.goods.filter(this.filterByCharacteristics);
+            const filtered = this.state.goods.filter(this.filterByCharacteristics).filter(this.filterByColor).filter(this.filterByRangePrice);
             this.setState({goodsByFilter: filtered, currentGoods: this.getCurrentGoods(filtered, 1), activePage: 1});
         });
     };
@@ -291,7 +293,7 @@ class Shop extends Component {
     };
 
     render() {
-        return <div className="super_container">
+        return <div style={this.state.isLoading? {display: 'none'} : {}} className="super_container">
             <Helmet>
                 <title>{strings.shop}</title>
                 <link rel="stylesheet" type="text/css" href="assets/styles/shop_styles.css"/>
