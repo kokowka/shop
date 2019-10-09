@@ -56,6 +56,8 @@ class AddGoods extends Component{
     addGoods = (e) =>{
         e.preventDefault();
         const subcategory = document.getElementById('subcategory').value;
+        const subcategoryRu = document.getElementById('subcategory-ru').value;
+        const subcategoryUa = document.getElementById('subcategory-ua').value;
         const sizeOfCharacteristics = document.getElementById('characteristic').children.length / 2;
         const characteristics = {};
         const characteristicsRu = {};
@@ -84,7 +86,9 @@ class AddGoods extends Component{
             'characteristics-en': characteristics,
             'characteristics-ru': characteristicsRu,
             'characteristics-ua': characteristicsUa,
-            subcategory: subcategory
+            'subcategory-en': subcategory,
+            'subcategory-ru': subcategoryRu,
+            'subcategory-ua': subcategoryUa
         }).then(res => {
             this.setState({
                 pictures: [],
@@ -222,6 +226,8 @@ class AddGoods extends Component{
                                         </div>
                                     </div>
                                     <input id={'subcategory'} style={this.state.category === 'accessoriesComputer' ? {}: {display: 'none'}} type="text" className="contact_form_name input_field" placeholder="Subcategories"/>
+                                    <input id={'subcategory-ru'} style={this.state.category === 'accessoriesComputer' ? {}: {display: 'none'}} type="text" className="contact_form_name input_field" placeholder="Подкатегории"/>
+                                    <input id={'subcategory-ua'} style={this.state.category === 'accessoriesComputer' ? {}: {display: 'none'}} type="text" className="contact_form_name input_field" placeholder="Підкатегорії"/>
                                     <div className="contact_form_button">
                                         <button type="submit" className="button contact_submit_button">Add
                                         </button>

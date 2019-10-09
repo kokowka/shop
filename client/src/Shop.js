@@ -77,7 +77,11 @@ class Shop extends Component {
             checkedFilter: {},
             language: language,
             characteristics: '',
-            isLoading: true
+            isLoading: true,
+            categories: strings.category,
+            isAccessoriesComputer: false,
+            subcategory: [],
+            nameOfSubcategory: ''
         }
     }
 
@@ -85,12 +89,19 @@ class Shop extends Component {
         const category = getUrlParam(window.location.href, 'category');
         const brand = getUrlParam(window.location.href, 'brand');
         const name = getUrlParam(window.location.href, 'name');
+        const nameOfSubcategory = getUrlParam(window.location.href, 'subcategory');
+        if(nameOfSubcategory) this.setState({nameOfSubcategory: nameOfSubcategory});
         const url = `/goods/getAllGoods?${brand ? `brand=${brand}`: ``}${category ? `category=${category}`: ``}${name ?`&name=${name}`:``}`;
         axios.post(url)
             .then(res => {
                 const current = this.getCurrentGoods(res.data, this.state.activePage);
                 const range = this.getPriceRange(res.data);
                 const sorted = res.data.sort(this.sortByRate);
+                if(category === 'accessoriesComputer'){
+                    const subcategory = res.data.map(value =>{console.log(value); return  value[`subcategory-${getSignLanguage(this.state.language)}`]});
+                    console.log(subcategory);
+                    this.setState({isAccessoriesComputer: true, subcategory: subcategory});
+                }
                 let filters = [];
                 const characteristics = `characteristics-${getSignLanguage(this.state.language)}`;
                 if(category){
@@ -315,23 +326,27 @@ class Shop extends Component {
                                 <div className="sidebar_section">
                                     <div className="sidebar_title">{strings.categories}</div>
                                     <ul className="sidebar_categories">
-                                        <li><a href={'/shop'}>{strings.all}</a></li>
-                                        <li><a href={'/shop?category=computerAndLaptops'}>{strings.computerAndLaptops}</a></li>
-                                        <li><a href={'/shop?category=cameras'}>{strings.cameras}</a></li>
-                                        <li><a href={'/shop?category=hardware'}>{strings.hardware}</a></li>
-                                        <li><a href={'/shop?category=phones'}>{strings.phones}</a></li>
-                                        <li><a href={'/shop?category=tv'}>{strings.tv}</a></li>
-                                        <li><a href={'/shop?category=gadgets'}>{strings.gadgets}</a></li>
-                                        <li><a href={'/shop?category=electronics'}>{strings.electronics}</a></li>
-                                        <li><a href={'/shop?category=consoles'}>{strings.consoles}</a></li>
-                                        <li><a href={'/shop?category=accessories'}>{strings.accessories}</a></li>
+                                        <li key={0}><a href={'/shop'}>{this.state.categories['allCategories']}</a></li>
+                                        {
+                                            Object.keys(this.state.categories).map((keyName, i) => {
+                                                if(keyName !== 'allCategories' && !this.state.isAccessoriesComputer)
+                                                return <li key={i}><a style={keyName==='sale' ? {color:'red', fontWeight: 'bold'}: {}} href={`/shop?category=${keyName}`}>{this.state.categories[keyName]}</a></li>
+                                            })
+                                        }
+                                        <h3 style={!this.state.isAccessoriesComputer ? {display: 'none'}: {}}>{this.state.categories['accessoriesComputer']}</h3>
+                                        <h5 style={!this.state.nameOfSubcategory ? {display: 'none'}: {marginLeft: '20px', fontStyle: 'italic'}}>{this.state.nameOfSubcategory}</h5>
+                                        {
+                                            this.state.subcategory.map((value, key) => {
+                                                return <li key={key}><a href={`/shop?category=accessoriesComputer&subcategory=${value}`}>{value}</a></li>
+                                            })
+                                        }
                                     </ul>
                                 </div>
                                 <div className="sidebar_section filter_by_section">
                                     <div className="sidebar_title">{strings.filterBy}:</div>
-                                    <div className="sidebar_subtitle" style={{marginBottom: "20px"}}>{strings.price}</div>
+                                    <div style={this.state.currentGoods.length === 0 ? {display: 'none'} : {marginBottom: "20px"}} className="sidebar_subtitle">{strings.price}</div>
                                     <div className="isotope">
-                                        <div data-role="rangeslider">
+                                        <div style={this.state.currentGoods.length === 0 ? {display: 'none'} : {}} data-role="rangeslider">
                                             <Range
                                                 max={this.state.max}
                                                 min={this.state.min}
@@ -351,7 +366,7 @@ class Shop extends Component {
                                                   onSwatchHover={ this.handleColorChange }/>
                                 </div>
                                     {Object.keys(this.state.filters).map((keyName, i) => {
-                                        return <div key={i} className={'filters'}>
+                                        return <div style={this.state.isAccessoriesComputer && !this.state.nameOfSubcategory ? {display: 'none'} : {}} key={i} className={'filters'}>
                                             <h4>{keyName}</h4>
                                             <Slider {...this.state.sliderFilterSetting}>
                                                 {this.state.filters[keyName].map((value, key) => {

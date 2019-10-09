@@ -2312,3 +2312,14 @@ select option
 .slick-track {
 	max-height: 25px;
 }
+.sidebar_section {
+	margin-left: 36px;
+}
+
+.form-check-label {
+	margin-left: 15px;
+}
+
+.filters {
+	margin-left: 36px;
+}
