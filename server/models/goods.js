@@ -44,7 +44,9 @@ const GoodSchema = new mongoose.Schema({
     'characteristics-en': Object,
     'characteristics-ru': Object,
     'characteristics-ua': Object,
-    subcategory: String
+    'subcategory-en': String,
+    'subcategory-ru': String,
+    'subcategory-ua': String
 }, {toJSON: {getters: true}, timestamps: true, minimize: false});
 
 module.exports = mongoose.model('Good', GoodSchema);

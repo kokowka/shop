@@ -98,8 +98,7 @@ class Shop extends Component {
                 const range = this.getPriceRange(res.data);
                 const sorted = res.data.sort(this.sortByRate);
                 if(category === 'accessoriesComputer'){
-                    const subcategory = res.data.map(value =>{console.log(value); return  value[`subcategory-${getSignLanguage(this.state.language)}`]});
-                    console.log(subcategory);
+                    const subcategory = res.data.map(value =>value[`subcategory-${getSignLanguage(this.state.language)}`]);
                     this.setState({isAccessoriesComputer: true, subcategory: subcategory});
                 }
                 let filters = [];
