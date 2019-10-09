@@ -62,7 +62,7 @@ class Shop extends Component {
                 autoplay: true,
             },
             sliderFilterSetting: {
-                arrow: false,
+                arrows: false,
                 dots: true,
                 infinite: false,
                 vertical: true,
@@ -70,8 +70,6 @@ class Shop extends Component {
                 speed: 500,
                 slidesToShow: 3,
                 slidesToScroll: 3,
-                copy:false,
-                autoplaySpeed: 9000
             },
             filters: {},
             checkedFilter: {},
@@ -94,7 +92,7 @@ class Shop extends Component {
         const url = `/goods/getAllGoods?${brand ? `brand=${brand}`: ``}${category ? `category=${category}`: ``}${name ?`&name=${name}`:``}`;
         axios.post(url)
             .then(res => {
-                const current = this.getCurrentGoods(res.data, this.state.activePage);
+                const current = this.getCurrentGoods(res.data, this.state.activePage).filter(this.filterBySybcategory);
                 const range = this.getPriceRange(res.data);
                 const sorted = res.data.sort(this.sortByRate);
                 if(category === 'accessoriesComputer'){
@@ -222,7 +220,7 @@ class Shop extends Component {
 
     setFiltersForCurrentGoods = () => {
         const goods = this.state.goods;
-        const filtered = goods.filter(this.filterByColor).filter(this.filterByRangePrice).filter(this.filterByCharacteristics);
+        const filtered = goods.filter(this.filterByColor).filter(this.filterByRangePrice).filter(this.filterByCharacteristics).filter(this.filterBySybcategory);
         this.setState({goodsByFilter: filtered, currentGoods: this.getCurrentGoods(filtered, 1), activePage: 1});
     };
 
@@ -235,6 +233,11 @@ class Shop extends Component {
             }
         }
         return false;
+    };
+
+    filterBySybcategory = (value) => {
+      if(!this.state.nameOfSubcategory) return true;
+      return value[`subcategory-${getSignLanguage(this.state.language)}`] === this.state.nameOfSubcategory;
     };
 
     filterByRangePrice = (value) => {
@@ -276,7 +279,7 @@ class Shop extends Component {
             }
         }
         this.setState({checkedFilter: checkedFilter}, ()=>{
-            const filtered = this.state.goods.filter(this.filterByCharacteristics).filter(this.filterByColor).filter(this.filterByRangePrice);
+            const filtered = this.state.goods.filter(this.filterByCharacteristics).filter(this.filterByColor).filter(this.filterByRangePrice).filter(this.filterBySybcategory);
             this.setState({goodsByFilter: filtered, currentGoods: this.getCurrentGoods(filtered, 1), activePage: 1});
         });
     };

@@ -93,3 +93,7 @@ ul.blog-ic {
     max-height: 80px;
     margin-right: 10px;
 }
+
+.slick-track {
+    height: 200px!important;
+}

@@ -15,6 +15,6 @@ const CommentSchema = new mongoose.Schema({
         type: String,
         required: [true, ' idOfProduct is required']
     }
-});
+}, {toJSON: {getters: true}, timestamps: true, minimize: false});
 
 module.exports = mongoose.model('Comment', CommentSchema);
