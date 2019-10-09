@@ -96,13 +96,13 @@ class Shop extends Component {
                 const range = this.getPriceRange(res.data);
                 const sorted = res.data.sort(this.sortByRate);
                 if(category === 'accessoriesComputer'){
-                    const subcategory = res.data.map(value =>value[`subcategory-${getSignLanguage(this.state.language)}`]);
+                    const subcategory = res.data.map(value =>value[`subcategory-${getSignLanguage(this.state.language)}`]).filter(onlyUnique);
                     this.setState({isAccessoriesComputer: true, subcategory: subcategory});
                 }
                 let filters = [];
                 const characteristics = `characteristics-${getSignLanguage(this.state.language)}`;
                 if(category){
-                    filters = res.data.filter((value => value[characteristics] && JSON.stringify(value[characteristics]) !== JSON.stringify({})))
+                    filters = res.data.filter(this.filterBySybcategory).filter((value => value[characteristics] && JSON.stringify(value[characteristics]) !== JSON.stringify({})))
                         .reduce((obj, item) => {
                             for(let key in item[characteristics]) {
                                 if (!obj[key]) obj[key] = [item[characteristics][key]];

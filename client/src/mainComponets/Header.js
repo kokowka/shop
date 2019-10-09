@@ -46,8 +46,6 @@ class Header extends Component {
             suggestions: [],
             searchValue: '',
             category: '',
-            bestProposition: [],
-            brands: [],
             hideNavWelcome: false,
             hideEmail: false,
             categories: strings.category
@@ -62,14 +60,9 @@ class Header extends Component {
             .catch(error => console.log(error));
         axios.post(`/goods/getAllGoods`)
             .then(result => {
-                this.setState({goods: result.data, bestProposition: result.data.slice(0, 5)})
+                this.setState({goods: result.data})
             })
             .catch(error => console.log(error));
-         axios.post(`/getAll?type=brand`)
-             .then(result => {
-                 this.setState({brands: result.data.result.slice(0, 5)});
-             })
-             .catch(error => console.log(error));
          window.addEventListener("resize", this.resize);
          this.resize();
     }
@@ -354,32 +347,11 @@ class Header extends Component {
 
                                 <div className="main_nav_menu ml-auto">
                                     <ul className="standard_dropdown main_nav_dropdown">
-                                        <li className="hassubs">
-                                            <a href={'/shop'}>{strings.superDeals}<i className="fas fa-chevron-down"/></a>
-                                            <ul>
-                                                {
-                                                    this.state.bestProposition.map((value, key) =>{
-                                                    return <li key={key}>
-                                                        <a href={`/product?id=${value.id}`}>{value.name}<i
-                                                            className="fas fa-chevron-down"/></a>
-                                                    </li>
-                                                })
-                                                }
-                                            </ul>
-                                        </li>
-                                        <li className="hassubs">
-                                            <a href={'/shop'}>{strings.featuredBrands}<i className="fas fa-chevron-down"/></a>
-                                            <ul> { this.state.brands.map((value, key) => {
-                                                return <li key={key}>
-                                                    <a href={`/shop?brand=${value}`}>{value}<i
-                                                        className="fas fa-chevron-down"/></a>
-                                                </li>
-                                            })
-                                            }
-                                            </ul>
-                                        </li>
-                                        <li><a href={"/contact"}>{strings.contact}<i className="fas fa-chevron-down"/></a>
-                                        </li>
+                                        <li><a href={"/info?type=pay"}>Доставка/Оплата<i className="fas fa-chevron-down"/></a></li>
+                                        <li><a href={"/info?type=guarantee"}>Гарантія<i className="fas fa-chevron-down"/></a></li>
+                                        <li><a href={"/info?type=сollaboration"}>Співпраця<i className="fas fa-chevron-down"/></a></li>
+                                        <li><a href={"/info?type=about"}>Про нас<i className="fas fa-chevron-down"/></a></li>
+                                        <li><a href={"/contact"}>{strings.contact}<i className="fas fa-chevron-down"/></a></li>
                                     </ul>
                                 </div>
                             </div>

@@ -3,6 +3,7 @@ const users = require('./users');
 const email = require('./email');
 const banner = require('./banner');
 const comment = require('./comment');
+const info = require('./info');
 
 const router = require('express').Router();
 
@@ -27,5 +28,7 @@ router.put('/setTimerForSuperProposition', goods.setTimerForSuperProposition);
 router.post('/addComment', comment.add);
 router.post('/getAllCommentById', comment.getAllById);
 router.put('/updateOrDeleteGood', goods.updateOrDelete);
+router.post('/createInfo', info.create);
+router.post('/getInfo', info.getByType);
 
 module.exports = router;

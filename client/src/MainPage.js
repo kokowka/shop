@@ -170,14 +170,6 @@ class MainPage extends Component {
         this.state.dealsSlider.slickNext();
     };
 
-    onPrevCategory = () => {
-        this.state.categorySlider.slickPrev();
-    };
-
-    onNextCategory = () => {
-        this.state.categorySlider.slickNext();
-    };
-
     onClickColor = (e) => {
         const color = e.target.value;
         const id = e.target.parentElement.getAttribute('value');

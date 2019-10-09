@@ -13,6 +13,8 @@ import Shop from './Shop';
 import AddBanner from './AddBanner';
 import UpdateGoods from './UpdateGoods';
 import NotFound from './NotFound';
+import InfoPage from './InfoPage';
+import AddInfo from './AddInfo';
 
 const routing = (
     <Router>
@@ -28,6 +30,8 @@ const routing = (
             <Route path={"/wishList"} component={WishList}/>
             <Route path={"/shop"} component={Shop}/>
             <Route path={"/update"} component={UpdateGoods}/>
+            <Route path={"/info"} component={InfoPage}/>
+            <Route path={"/addInfo"} component={AddInfo}/>
             <Route path="*" component={NotFound} />
         </Switch>
     </Router>
