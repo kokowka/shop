@@ -45,13 +45,13 @@ class InfoPage extends Component{
                 <link rel="stylesheet" type="text/css" href="assets/styles/blog_single_styles.css"/>
             </Helmet>
             <Header/>
-            <div className="single_post" style={this.state.info.img ? {marginBottom: '300px'}: {}}>
+            <div className="single_post" style={this.state.info && this.state.info.img ? {marginBottom: '300px'}: {}}>
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8 offset-lg-2">
                             <div className="single_post_title">{this.state.info ? this.state.info[`title-${getSignLanguage(this.state.language)}`]: ``}
                             </div>
-                            <img style={this.state.info.img ? {maxHeight: '300px', objectFit: 'contain'}: {}} src={this.state.info.img} alt=""/>
+                            <img style={this.state.info && this.state.info.img ? {maxHeight: '300px', objectFit: 'contain'}: {}} src={this.state.info && this.state.info.img ? this.state.info.img : ''} alt=""/>
                             <div className="single_post_text">
                                 <Interweave
                                     content= {this.state.info ? this.state.info[`text-${getSignLanguage(this.state.language)}`]: ``}/>
