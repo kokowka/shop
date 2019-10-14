@@ -125,7 +125,6 @@ async function getDiscountGoods(req, res){
 }
 
 async function setTimerForSuperProposition(req, res) {
-    console.log(req.body);
     const timer = req.body.timer;
     let query = {
         timerOfPropose: timer

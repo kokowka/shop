@@ -9,7 +9,8 @@ import Timer from 'react-compound-timer';
 import axios from "axios";
 import LocalizedStrings from 'react-localization';
 import localization from './data/localization';
-import {exchangeByCurrentCurrency, getSignCurrency, roundPriceWithDiscount, isInWishList, isActiveWish} from "./utils";
+import {exchangeByCurrentCurrency, getSignCurrency, roundPriceWithDiscount, isInWishList, isActiveWish, getRating, makeSmallerStr} from "./utils";
+import StarRatings from 'react-star-ratings';
 
 let strings = new LocalizedStrings(localization);
 
@@ -51,6 +52,16 @@ class MainPage extends Component {
                 autoplay: true,
                 rows: 1
             },
+            reviewSliderSetting:{
+                dots: false,
+                arrows: false,
+                infinite: true,
+                speed: 600,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                autoplaySpeed: 4000,
+                autoplay: true
+            },
             superPropose: [],
             currency: currency,
             exchangeValue: [],
@@ -58,7 +69,10 @@ class MainPage extends Component {
             currentGoodsDot: 1,
             currentFeatured: 0,
             isActive: [],
-            isLoading: true
+            isLoading: true,
+            lastComments: [],
+            productsOfComments: [],
+            productRating: {}
         };
     }
 
@@ -73,6 +87,26 @@ class MainPage extends Component {
             .catch(error => console.log(error));
         axios.post(`/getBestGoods?size=20`)
             .then(res => this.setState({goods: res.data, isActive: isActiveWish(this.state.isActive, res.data)}))
+            .catch(error => console.log(error));
+        axios.post('/getLastComments?size=9')
+            .then( res => {
+                const comments = res.data;
+                const currentTime = new Date();
+                for(let i = 0; i<comments.length; i++) {
+                    const createdAt = new Date(comments[i].createdAt);
+                    const diffTime = Math.abs(currentTime - createdAt);
+                    axios.post(`/goods/${comments[i].idOfProduct}`)
+                        .then(result => {
+                            const productRating = this.state.productRating;
+                            const rate = result.data.rate['$numberDecimal'] ? Number.parseFloat(result.data.rate['$numberDecimal']) : 0;
+                            productRating[`${comments[i].idOfProduct}`] = rate;
+                            this.setState({productsOfComments: this.state.productsOfComments.concat(result.data),
+                                productRating: productRating})
+                        });
+                    comments[i].diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                }
+                this.setState({lastComments: comments});
+            });
         setTimeout(() =>this.setState({isLoading: false}), 400)
     }
 
@@ -176,6 +210,23 @@ class MainPage extends Component {
         window.location.href = `/product?id=${id}&color=${color}`;
     };
 
+    changeRating = (rating, id) => {
+        const isVoting = localStorage.getItem(`vote${id}`);
+        if(!isVoting) {
+            axios.put(`/goods/updateRating`, {id: id, rating: rating})
+                .then((res) => {
+                    localStorage.setItem(`vote${id}`, 'vote');
+                    res.data.rating.push(rating);
+                    const rate = getRating(res.data.rating);
+                    const productRating = this.state.productRating;
+                    productRating[`${id}`] = rate;
+                    this.setState({productRating: productRating});
+                    axios.put(`/goods/updateRate`, {id: id, rate: rate});
+                })
+                .catch(error => console.log(error));
+           }
+    };
+
     render() {
         return <div style={this.state.isLoading? {display: 'none'} : {}} className="super_container">
             <Helmet>
@@ -208,7 +259,7 @@ class MainPage extends Component {
                                                     </div>
                                                     <div
                                                         className="deals_info_line d-flex flex-row justify-content-start">
-                                                        <div className="deals_item_name"><a href={`/product?id=${value.id}`}>{value.name}</a></div>
+                                                        <div className="deals_item_name"><a href={`/product?id=${value.id}`}>{makeSmallerStr(value.name, 12)}</a></div>
                                                         <div className="deals_item_price ml-auto">{getSignCurrency(this.state.currency)}{exchangeByCurrentCurrency(roundPriceWithDiscount(value.price['$numberDecimal'], value.discount), this.state.currency, this.state.exchangeValue)}</div>
                                                     </div>
                                                     <div className="available">
@@ -288,6 +339,7 @@ class MainPage extends Component {
                                             <Slider ref={c => this.state.goodsSlider = c} {...this.state.goodsSliderSetting}>
                                                 {
                                                     this.state.goods.map((value, key) => {
+                                                        if(value.price)
                                                         return <div key={key} value={key}
                                                             className={`product_item ${value.isNewGood ? `is_new`:``}${value.discount === 0 ? ``:`discount`} d-flex flex-column align-items-center justify-content-center text-center`}>
                                                             <div
@@ -331,7 +383,55 @@ class MainPage extends Component {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div style={this.state.lastComments.length < 3 ? {display: 'none'} : {}} className="reviews">
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col">
 
+                                        <div className="reviews_title_container">
+                                            <h3 className="reviews_title">{strings.latestComments}</h3>
+                                        </div>
+
+                                        <div className="reviews_slider_container">
+
+                                            <Slider {...this.state.reviewSliderSetting}>
+                                                {
+                                                    this.state.lastComments.map((value, key) => {
+                                                        const product = this.state.productsOfComments[key] ? this.state.productsOfComments[key] : {imgs: [], rate: {}};
+                                                        if(product.imgs.length !== 0)
+                                                        return <div className="owl-item" key={key}>
+                                                          <div
+                                                              className="review d-flex flex-row align-items-start justify-content-start">
+                                                              <div>
+                                                                  <a href={`/product?id=${product.id}`}><div className="review_image"><img src={product.imgs[0]}
+                                                                                                     alt=""/></div></a>
+                                                              </div>
+                                                              <div className="review_content">
+                                                                  <div className="review_name">{value.fullName}</div>
+                                                                  <div className="review_rating_container">
+                                                                      <StarRatings
+                                                                          rating={this.state.productRating[`${product.id}`] }
+                                                                          numberOfStars={5}
+                                                                          changeRating={this.changeRating}
+                                                                          name={product.id}
+                                                                          starDimension='25px'
+                                                                          starRatedColor='rgb(255, 128, 0)'
+                                                                      />
+                                                                      <div className="review_time">{value.diffDays} {strings.daysAgo}</div>
+                                                                  </div>
+                                                                  <div className="review_text"><p>{value.text}</p></div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                    })
+                                                }
+
+                                            </Slider>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

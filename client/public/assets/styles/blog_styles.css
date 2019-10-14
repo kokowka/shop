@@ -1261,10 +1261,13 @@ select option
 {
 	width: 100%;
 	flex-wrap: wrap;
+	max-width: 325px;
+	margin-left: 30px;
+	float: left!important;
 }
 .blog_post
 {
-	width: calc((100% - 60px) / 3);
+	width: 325px;
 	height: 290px;
 	margin-bottom: 30px;
 	border-radius: 5px;
@@ -1284,7 +1287,7 @@ select option
 }
 .blog_image
 {
-	width: 100%;
+	width: 325px;
 	height: 160px;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -1294,6 +1297,7 @@ select option
 }
 .blog_text
 {
+	width: 325px;
 	padding-left: 31px;
 	padding-right: 31px;
 	padding-top: 21px;
@@ -1306,7 +1310,7 @@ select option
 	position: absolute;
 	top: 100%;
 	left: 0;
-	width: 100%;
+	width: 325px;
 	height: 48px;
 	background: #0e8ce4;
 	text-align: center;

@@ -24,6 +24,7 @@ class AddBanner extends Component {
         this.state = {
             pictures: [],
             urls: [],
+            categories: strings.category,
         }
     }
 
@@ -52,11 +53,8 @@ class AddBanner extends Component {
             type: e.target[2].value,
             category: e.target[3].value,
             rating: e.target[4].value,
-            price: e.target[5].value,
-            discount: e.target[6].value,
-            'description-en': e.target[10].value,
-            'description-ru': e.target[11].value,
-            'description-ua': e.target[12].value,
+            'description-ru': e.target[8].value,
+            'description-ua': e.target[9].value,
             img: this.state.urls[0],
         }).then(res => window.location.href = '/')
             .catch(error => console.log(error))
@@ -90,24 +88,16 @@ class AddBanner extends Component {
                                         </select>
 
                                         <select className="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-                                            <option select="categories">{strings.categories}</option>
-                                            <option value="computerAndLaptops">{strings.computerAndLaptops}</option>
-                                            <option value="cameras">{strings.cameras}</option>
-                                            <option value="phones">{strings.phones}</option>
-                                            <option value="tv">{strings.tv}</option>
-                                            <option value="gadgets">{strings.gadgets}</option>
-                                            <option value="electronics">{strings.electronics}</option>
-                                            <option value="consoles">{strings.consoles}</option>
-                                            <option value="accessories">{strings.accessories}</option>
+                                            {
+                                                Object.keys(this.state.categories).map((keyName, i) => {
+                                                    return <option key={i} value={keyName}>{this.state.categories[keyName]}</option>
+                                                })
+                                            }
                                         </select>
                                     </div>
                                     <div className="contact_form_text">
                                         <input type="number" step="0.01" id="contact_form_name"
                                                className="contact_form_name input_field" placeholder="Rating"/>
-                                        <input type="number" step="0.01" id="contact_form_name"
-                                               className="contact_form_name input_field" placeholder="Price"/>
-                                        <input type="number" id="contact_form_name"
-                                               className="contact_form_name input_field" placeholder="Discount"/>
                                         <ImageUploader
                                             withIcon={true}
                                             buttonText='Choose images'
@@ -116,9 +106,6 @@ class AddBanner extends Component {
                                             maxFileSize={5242880}
                                         />
                                         <button onClick={this.uploadImg} className="button contact_submit_button">Upload images</button>
-                                        <textarea id="contact_form_message" className="text_field contact_form_message"
-                                                  name="description-eng" rows="4" placeholder="Description" required="required"
-                                                  data-error="Please, write us a message."/>
                                         <textarea id="contact_form_message" className="text_field contact_form_message"
                                                   name="description-ru" rows="4" placeholder="Описание" required="required"
                                                   data-error="Please, write us a message."/>

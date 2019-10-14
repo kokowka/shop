@@ -55,19 +55,14 @@ class AddGoods extends Component{
 
     addGoods = (e) =>{
         e.preventDefault();
-        const subcategory = document.getElementById('subcategory').value;
         const subcategoryRu = document.getElementById('subcategory-ru').value;
         const subcategoryUa = document.getElementById('subcategory-ua').value;
-        const sizeOfCharacteristics = document.getElementById('characteristic').children.length / 2;
-        const characteristics = {};
+        const sizeOfCharacteristics = document.getElementById('characteristic-ru').children.length / 2;
         const characteristicsRu = {};
         const characteristicsUa = {};
         for(let i = 0; i<sizeOfCharacteristics; i++) {
-            let key = document.getElementById('characteristic').children[i * 2].value;
-            let val = document.getElementById('characteristic').children[i * 2 + 1].value;
-            characteristics[key] = val;
-            key = document.getElementById('characteristic-ru').children[i * 2].value;
-            val = document.getElementById('characteristic-ru').children[i * 2 + 1].value;
+            let key = document.getElementById('characteristic-ru').children[i * 2].value;
+            let val = document.getElementById('characteristic-ru').children[i * 2 + 1].value;
             characteristicsRu[key] = val;
             key = document.getElementById('characteristic-ua').children[i * 2].value;
             val = document.getElementById('characteristic-ua').children[i * 2 + 1].value;
@@ -79,14 +74,11 @@ class AddGoods extends Component{
             colors: this.state.colors,
             category: e.target[6].value,
             price: e.target[7].value,
-            'description-en': e.target[11].value,
-            'description-ru': e.target[12].value,
-            'description-ua': e.target[13].value,
+            'description-ru': e.target[11].value,
+            'description-ua': e.target[12].value,
             imgs: this.state.urls,
-            'characteristics-en': characteristics,
             'characteristics-ru': characteristicsRu,
             'characteristics-ua': characteristicsUa,
-            'subcategory-en': subcategory,
             'subcategory-ru': subcategoryRu,
             'subcategory-ua': subcategoryUa
         }).then(res => {
@@ -101,8 +93,6 @@ class AddGoods extends Component{
     addCharacteristic= () => {
         const nodeKey1 = document.createElement('input');
         const nodeKey2 = document.createElement('input');
-        const nodeKey3 = document.createElement('input');
-        const characteristic = document.getElementById('characteristic');
         const characteristicRu = document.getElementById('characteristic-ru');
         const characteristicUa = document.getElementById('characteristic-ua');
         nodeKey1.setAttribute('type', 'text');
@@ -111,37 +101,25 @@ class AddGoods extends Component{
         nodeKey2.setAttribute('type', 'text');
         nodeKey2.setAttribute('class', 'contact_form_name input_field');
         nodeKey2.placeholder = 'Key';
-        nodeKey3.setAttribute('type', 'text');
-        nodeKey3.setAttribute('class', 'contact_form_name input_field');
-        nodeKey3.placeholder = 'Key';
-        characteristic.appendChild(nodeKey1);
-        characteristicRu.appendChild(nodeKey2);
-        characteristicUa.appendChild(nodeKey3);
+        characteristicRu.appendChild(nodeKey1);
+        characteristicUa.appendChild(nodeKey2);
         const nodeValue1 = document.createElement('input');
         const nodeValue2 = document.createElement('input');
-        const nodeValue3 = document.createElement('input');
         nodeValue1.type = 'text';
         nodeValue1.className += 'contact_form_name input_field add_characteristic';
         nodeValue1.placeholder = 'Value';
         nodeValue2.type = 'text';
         nodeValue2.className += 'contact_form_name input_field add_characteristic';
         nodeValue2.placeholder = 'Value';
-        nodeValue3.type = 'text';
-        nodeValue3.className += 'contact_form_name input_field add_characteristic';
-        nodeValue3.placeholder = 'Value';
-        characteristic.appendChild(nodeValue1);
-        characteristicRu.appendChild(nodeValue2);
-        characteristicUa.appendChild(nodeValue3);
+        characteristicRu.appendChild(nodeValue1);
+        characteristicUa.appendChild(nodeValue2);
     };
 
     minusCharacteristic = () => {
-        const characteristic = document.getElementById('characteristic');
         const characteristicRu = document.getElementById('characteristic-ru');
         const characteristicUa = document.getElementById('characteristic-ua');
-        const length = characteristic.childNodes.length;
+        const length = characteristicRu.childNodes.length;
         if(length !==0) {
-            characteristic.removeChild(characteristic.childNodes[length - 1]);
-            characteristic.removeChild(characteristic.childNodes[length - 2]);
             characteristicRu.removeChild(characteristicRu.childNodes[length - 1]);
             characteristicRu.removeChild(characteristicRu.childNodes[length - 2]);
             characteristicUa.removeChild(characteristicUa.childNodes[length - 1]);
@@ -197,27 +175,18 @@ class AddGoods extends Component{
                                         />
                                         <button onClick={this.uploadImg} className="button contact_submit_button">Upload images</button>
                                         <textarea id="contact_form_message" className="text_field contact_form_message"
-                                                  name="description-eng" rows="4" placeholder="Description" required="required"
-                                                  data-error="Please, write us a message."/>
-                                        <textarea id="contact_form_message" className="text_field contact_form_message"
                                                   name="description-ru" rows="4" placeholder="Описание" required="required"
                                                   data-error="Please, write us a message."/>
                                         <textarea id="contact_form_message" className="text_field contact_form_message"
                                                   name="description-ua" rows="4" placeholder="Опис" required="required"
                                                   data-error="Please, write us a message."/>
-                                        <h3>Characteristics</h3>
-                                        <div id={'characteristic'}>
-                                            <input type="text" className="contact_form_name input_field" placeholder="Key"/>
-                                            <input type="text" className="contact_form_name input_field add_characteristic" placeholder="Value"/>
-                                        </div>
-                                        <span onClick={this.addCharacteristic} className="glyphicon glyphicon-plus" style={{marginLeft: '20px'}}/>
-                                        <span onClick={this.minusCharacteristic} className="glyphicon glyphicon-minus" style={{marginLeft: '20px'}}/>
-
                                         <h3>Характеристика(Ru)</h3>
                                         <div id={'characteristic-ru'}>
                                             <input type="text" className="contact_form_name input_field" placeholder="Key"/>
                                             <input type="text" className="contact_form_name input_field add_characteristic" placeholder="Value"/>
                                         </div>
+                                        <span onClick={this.addCharacteristic} className="glyphicon glyphicon-plus" style={{marginLeft: '20px'}}/>
+                                        <span onClick={this.minusCharacteristic} className="glyphicon glyphicon-minus" style={{marginLeft: '20px'}}/>
 
                                         <h3>Характеристика</h3>
                                         <div id={'characteristic-ua'}>
@@ -225,9 +194,8 @@ class AddGoods extends Component{
                                             <input type="text" className="contact_form_name input_field add_characteristic" placeholder="Value"/>
                                         </div>
                                     </div>
-                                    <input id={'subcategory'} style={this.state.category === 'accessoriesComputer' ? {}: {display: 'none'}} type="text" className="contact_form_name input_field" placeholder="Subcategories"/>
-                                    <input id={'subcategory-ru'} style={this.state.category === 'accessoriesComputer' ? {}: {display: 'none'}} type="text" className="contact_form_name input_field" placeholder="Подкатегории"/>
-                                    <input id={'subcategory-ua'} style={this.state.category === 'accessoriesComputer' ? {}: {display: 'none'}} type="text" className="contact_form_name input_field" placeholder="Підкатегорії"/>
+                                    <input id={'subcategory-ru'} style={this.state.category === 'accessoriesComputer' || this.state.category === 'sale' ? {}: {display: 'none'}} type="text" className="contact_form_name input_field" placeholder="Подкатегории"/>
+                                    <input id={'subcategory-ua'} style={this.state.category === 'accessoriesComputer' || this.state.category === 'sale' ? {}: {display: 'none'}} type="text" className="contact_form_name input_field" placeholder="Підкатегорії"/>
                                     <div className="contact_form_button">
                                         <button type="submit" className="button contact_submit_button">Add
                                         </button>

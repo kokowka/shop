@@ -6,7 +6,7 @@ import axios from "axios";
 import LocalizedStrings from 'react-localization';
 import localization from './data/localization';
 import StarRatings from 'react-star-ratings';
-import {getSignCurrency, getSignLanguage, exchangeByCurrentCurrency, roundPriceWithDiscount, isInWishList} from './utils';
+import {getSignCurrency, getSignLanguage, exchangeByCurrentCurrency, roundPriceWithDiscount, isInWishList, getRating} from './utils';
 import Comments from './mainComponets/Comments';
 
 let strings = new LocalizedStrings(localization);
@@ -50,7 +50,7 @@ class Product extends Component{
                 mainImg: res.data.imgs[this.state.indexOfColors * 3],
                 price: res.data.price.$numberDecimal,
                 mainColor: res.data.colors[this.state.indexOfColors],
-                rating: this.getRating(res.data.rating)}))
+                rating: getRating(res.data.rating)}))
             .catch(error => console.log(error));
         axios.get('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11')
             .then(result => {
@@ -95,21 +95,12 @@ class Product extends Component{
                 .then((res) => {
                     localStorage.setItem(`vote${this.state.id}`, 'vote');
                     res.data.rating.push(rating);
-                    const rate = this.getRating(res.data.rating);
+                    const rate = getRating(res.data.rating);
                     this.setState({rating: rate});
                     axios.put(`/goods/updateRate`, {id: this.state.id, rate: rate});
                 })
                 .catch(error => console.log(error));
         }
-    };
-
-    getRating = (rates) => {
-      let sum = 0;
-      const length = rates.length;
-      if(length === 0) return 0;
-      for(let i = 0; i<length; i++)
-          sum += rates[i];
-      return sum / length;
     };
 
     changeWishList = () => {

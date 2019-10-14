@@ -15,6 +15,8 @@ import UpdateGoods from './UpdateGoods';
 import NotFound from './NotFound';
 import InfoPage from './InfoPage';
 import AddInfo from './AddInfo';
+import Blog from './Blog';
+import AddPost from './AddPost';
 
 const routing = (
     <Router>
@@ -32,6 +34,8 @@ const routing = (
             <Route path={"/update"} component={UpdateGoods}/>
             <Route path={"/info"} component={InfoPage}/>
             <Route path={"/addInfo"} component={AddInfo}/>
+            <Route path={"/blog"} component={Blog}/>
+            <Route path={"/addPost"} component={AddPost}/>
             <Route path="*" component={NotFound} />
         </Switch>
     </Router>

@@ -79,7 +79,7 @@ class Comments extends Component{
                                     <img src="assets/images/si.png" alt=""/>
                                 </div>
                                 <div className="media-right">
-                                    {value.createdAt.split('.')[0]}
+                                    {new Date(value.createdAt).toLocaleString('uk-UA', {timeZone: "Europe/Kiev"})}
                                 </div>
                                 <div className="media-body">
                                     <h4 className="media-heading">{value.fullName}</h4>

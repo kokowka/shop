@@ -83,7 +83,9 @@
     "send": "Send",
     "notFound": "Product not found",
     "next": "Next",
-    "prev": "Previous"
+    "prev": "Previous",
+    "latestComments": "Latest Comments",
+    "daysAgo": "days ago"
   },
   "Русский": {
     "categories" : "Категории",
@@ -169,7 +171,18 @@
     "send": "Отправлять",
     "notFound": "Товар не найден",
     "next": "Следующие",
-    "prev": "Предыдущие"
+    "prev": "Предыдущие",
+    "latestComments": "Последние Комментарии",
+    "daysAgo": "дней назад",
+    "prepayment": "Никаких предоплат",
+    "service": "Европейское гарантийное обслуживание",
+    "quality": "Несомненное качество товаров",
+    "blog": "Блог",
+    "delivery": "Доставка/Оплата",
+    "guarantee": "Гарантия",
+    "collaboration": "Сотрудничество",
+    "aboutUs": "О нас",
+    "continue": "Продолжить Читать"
   },
   "Українська": {
     "categories": "Категорії",
@@ -255,6 +268,17 @@
     "send": "Надіслати",
     "notFound": "Товар не знайдено",
     "next": "Наступні",
-    "prev": "Попередні"
+    "prev": "Попередні",
+    "latestComments": "Останні Коментарі",
+    "daysAgo": "днів тому",
+    "prepayment": "Ніяких передоплат",
+    "service": "Європейське гарантійне обслуговування",
+    "quality": "Беззаперечна якість товарів",
+    "blog": "Блог",
+    "delivery": "Доставка/Оплата",
+    "guarantee": "Гарантія",
+    "collaboration": "Співпраця",
+    "aboutUs": "Про нас",
+    "continue": "Продовжити читати"
   }
 }

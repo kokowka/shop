@@ -77,9 +77,11 @@ class Shop extends Component {
             characteristics: '',
             isLoading: true,
             categories: strings.category,
-            isAccessoriesComputer: false,
+            isAccessoriesComputerOrSale: false,
             subcategory: [],
-            nameOfSubcategory: ''
+            nameOfSubcategory: '',
+            category: '',
+            sortBy: strings.rate
         }
     }
 
@@ -95,9 +97,9 @@ class Shop extends Component {
                 const current = this.getCurrentGoods(res.data, this.state.activePage).filter(this.filterBySybcategory);
                 const range = this.getPriceRange(res.data);
                 const sorted = res.data.sort(this.sortByRate);
-                if(category === 'accessoriesComputer'){
+                if(category === 'accessoriesComputer' || category === 'sale'){
                     const subcategory = res.data.map(value =>value[`subcategory-${getSignLanguage(this.state.language)}`]).filter(onlyUnique);
-                    this.setState({isAccessoriesComputer: true, subcategory: subcategory});
+                    this.setState({isAccessoriesComputerOrSale: true, subcategory: subcategory, category: category});
                 }
                 let filters = [];
                 const characteristics = `characteristics-${getSignLanguage(this.state.language)}`;
@@ -250,10 +252,13 @@ class Shop extends Component {
         const goods = this.state.goodsByFilter;
         let sorted = [];
         if(sortBy === 'original-order') {
+            this.setState({sortBy: strings.rate});
             sorted = goods.sort(this.sortByRate);
         } else if(sortBy === 'name'){
+            this.setState({sortBy: strings.name});
             sorted = goods.sort(this.sortByName)
         } else {
+            this.setState({sortBy: strings.price});
             sorted = goods.sort(this.sortByPrice);
         }
         this.setState({goodsByFilter: sorted, currentGoods: this.getCurrentGoods(sorted, 1), activePage: 1});
@@ -331,15 +336,15 @@ class Shop extends Component {
                                         <li key={0}><a href={'/shop'}>{this.state.categories['allCategories']}</a></li>
                                         {
                                             Object.keys(this.state.categories).map((keyName, i) => {
-                                                if(keyName !== 'allCategories' && !this.state.isAccessoriesComputer)
+                                                if(keyName !== 'allCategories' && !this.state.isAccessoriesComputerOrSale)
                                                 return <li key={i}><a style={keyName==='sale' ? {color:'red', fontWeight: 'bold'}: {}} href={`/shop?category=${keyName}`}>{this.state.categories[keyName]}</a></li>
                                             })
                                         }
-                                        <h3 style={!this.state.isAccessoriesComputer ? {display: 'none'}: {}}>{this.state.categories['accessoriesComputer']}</h3>
+                                        <h3 style={!this.state.isAccessoriesComputerOrSale ? {display: 'none'}: {}}>{this.state.category  === 'sale' ? this.state.categories['sale']: this.state.categories['accessoriesComputer']}</h3>
                                         <h5 style={!this.state.nameOfSubcategory ? {display: 'none'}: {marginLeft: '20px', fontStyle: 'italic'}}>{this.state.nameOfSubcategory}</h5>
                                         {
                                             this.state.subcategory.map((value, key) => {
-                                                return <li key={key}><a href={`/shop?category=accessoriesComputer&subcategory=${value}`}>{value}</a></li>
+                                                return <li key={key}><a href={`/shop?category=${this.state.category}&subcategory=${value}`}>{value}</a></li>
                                             })
                                         }
                                     </ul>
@@ -368,7 +373,7 @@ class Shop extends Component {
                                                   onSwatchHover={ this.handleColorChange }/>
                                 </div>
                                     {Object.keys(this.state.filters).map((keyName, i) => {
-                                        return <div style={this.state.isAccessoriesComputer && !this.state.nameOfSubcategory ? {display: 'none'} : {}} key={i} className={'filters'}>
+                                        return <div style={this.state.isAccessoriesComputerOrSale && !this.state.nameOfSubcategory ? {display: 'none'} : {}} key={i} className={'filters'}>
                                             <h4>{keyName}</h4>
                                             <Slider {...this.state.sliderFilterSetting}>
                                                 {this.state.filters[keyName].map((value, key) => {
@@ -404,7 +409,7 @@ class Shop extends Component {
                                         <span>{strings.sortBy}:</span>
                                         <ul>
                                             <li>
-                                                <span className="sorting_text">{strings.rate}<i className="fas fa-chevron-down"/></span>
+                                                <span className="sorting_text">{this.state.sortBy}<i className="fas fa-chevron-down"/></span>
                                             <ul>
                                                 <li className="shop_sorting_button" onClick={this.changeSort} data-isotope-option='{ "sortBy": "original-order" }'>{strings.rate}</li>
                                                 <li className="shop_sorting_button" onClick={this.changeSort} data-isotope-option='{ "sortBy": "name" }'>{strings.name}</li>

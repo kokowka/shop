@@ -29,7 +29,7 @@ class UpdateGoods extends Component{
         const discount = e.target[2].value || 0;
         const isNewGood = e.target[3].value;
         const isSuperPropose = e.target[4].value;
-        const timerOfPropose = e.target[5].value || 0;
+        const timerOfPropose = e.target[5].value * 36000 * 100 || 0;
         const available = e.target[6].value || 0;
         const sold = e.target[7].value || 0;
         axios.put(`/updateOrDeleteGood`, {

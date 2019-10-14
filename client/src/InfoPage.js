@@ -2,12 +2,10 @@ import React, {Component} from "react";
 import Header from "./mainComponets/Header";
 import Footer from "./mainComponets/Footer";
 import {Helmet} from "react-helmet";
-import LocalizedStrings from 'react-localization';
-import localization from './data/localization';
 import axios from "axios";
 import {getUrlParam, getSignLanguage} from "./utils";
+import Interweave from "interweave";
 
-let strings = new LocalizedStrings(localization);
 
 class InfoPage extends Component{
     constructor(props){
@@ -24,11 +22,20 @@ class InfoPage extends Component{
 
     componentDidMount() {
         const type = getUrlParam(window.location.href, 'type');
-        axios.post(`/getInfo?type=${type}`)
-            .then(result => {
-                this.setState({info: result.data[0]})
-            })
-            .catch(error => console.log(error));
+        if(type === 'blog') {
+            const id = getUrlParam(window.location.href, 'id');
+            axios.post(`/getPostsById?id=${id}`)
+                .then(result => {
+                    this.setState({info: result.data[0]})
+                })
+                .catch(error => console.log(error));
+        } else {
+            axios.post(`/getInfo?type=${type}`)
+                .then(result => {
+                    this.setState({info: result.data.reverse()[0]})
+                })
+                .catch(error => console.log(error));
+        }
         setTimeout(() =>this.setState({isLoading: false}), 400)
     }
 
@@ -38,14 +45,16 @@ class InfoPage extends Component{
                 <link rel="stylesheet" type="text/css" href="assets/styles/blog_single_styles.css"/>
             </Helmet>
             <Header/>
-            <div className="single_post">
+            <div className="single_post" style={this.state.info.img ? {marginBottom: '300px'}: {}}>
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8 offset-lg-2">
                             <div className="single_post_title">{this.state.info ? this.state.info[`title-${getSignLanguage(this.state.language)}`]: ``}
                             </div>
+                            <img style={this.state.info.img ? {maxHeight: '300px', objectFit: 'contain'}: {}} src={this.state.info.img} alt=""/>
                             <div className="single_post_text">
-                                <p>{this.state.info ? this.state.info[`text-${getSignLanguage(this.state.language)}`]: ``}</p>
+                                <Interweave
+                                    content= {this.state.info ? this.state.info[`text-${getSignLanguage(this.state.language)}`]: ``}/>
                             </div>
                         </div>
                     </div>

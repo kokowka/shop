@@ -6,7 +6,6 @@ const GoodSchema = new mongoose.Schema({
     name: String,
     colors: Array,
     category: String,
-    'description-en': String,
     'description-ru': String,
     'description-ua': String,
     price: mongoose.SchemaTypes.Decimal128,
@@ -41,10 +40,8 @@ const GoodSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    'characteristics-en': Object,
     'characteristics-ru': Object,
     'characteristics-ua': Object,
-    'subcategory-en': String,
     'subcategory-ru': String,
     'subcategory-ua': String
 }, {toJSON: {getters: true}, timestamps: true, minimize: false});

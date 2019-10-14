@@ -14,8 +14,8 @@ class Header extends Component {
         super(props);
         const language = localStorage.getItem('language') || 'Українська' || 'Українська';
         const fullName = localStorage.getItem('fullName');
-        let languages = ["Українська", "Русский", "English"];
-        let currencies = ["₴ Гривня", "₽ Рубль", "$ US dollar"];
+        let languages = ["Українська", "Русский"];
+        let currencies = ["₴ Гривня", "$ US dollar"];
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
         const wishList = JSON.parse(localStorage.getItem('wishList')) || [];
         const indexOfValue = languages.indexOf(language);
@@ -47,6 +47,7 @@ class Header extends Component {
             searchValue: '',
             category: '',
             hideNavWelcome: false,
+            hideAboutUs: false,
             hideEmail: false,
             categories: strings.category
         };
@@ -68,7 +69,7 @@ class Header extends Component {
     }
 
     resize = () => {
-        this.setState({hideNavWelcome: window.innerWidth <= 1200, hideEmail: window.innerWidth <= 1000});
+        this.setState({hideNavWelcome: window.innerWidth <= 1200, hideEmail: window.innerWidth <= 1000, hideAboutUs: window.innerWidth <=1200});
     };
 
     updateStorageInfo = () => {
@@ -222,14 +223,12 @@ class Header extends Component {
                                             <a href={window.location.href}>{this.state.language[0]}<i className="fas fa-chevron-down"/></a>
                                             <ul>
                                                 <li><a href={window.location.href} onClick={this.onClickLanguage}>{this.state.language[1]}</a></li>
-                                                <li><a href={window.location.href} onClick={this.onClickLanguage}>{this.state.language[2]}</a></li>
                                             </ul>
                                         </li>
                                         <li>
                                             <a href={window.location.href}>{this.state.currencies[0]}<i className="fas fa-chevron-down"/></a>
                                             <ul>
                                                 <li><a href={window.location.href} onClick={this.onClickCurrency}>{this.state.currencies[1]}</a></li>
-                                                <li><a href={window.location.href} onClick={this.onClickCurrency}>{this.state.currencies[2]}</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -347,11 +346,12 @@ class Header extends Component {
 
                                 <div className="main_nav_menu ml-auto">
                                     <ul className="standard_dropdown main_nav_dropdown">
-                                        <li><a href={"/info?type=pay"}>Доставка/Оплата<i className="fas fa-chevron-down"/></a></li>
-                                        <li><a href={"/info?type=guarantee"}>Гарантія<i className="fas fa-chevron-down"/></a></li>
-                                        <li><a href={"/info?type=сollaboration"}>Співпраця<i className="fas fa-chevron-down"/></a></li>
-                                        <li><a href={"/info?type=about"}>Про нас<i className="fas fa-chevron-down"/></a></li>
+                                        <li><a href={"/info?type=pay"}>{strings.delivery}<i className="fas fa-chevron-down"/></a></li>
+                                        <li><a href={"/info?type=guarantee"}>{strings.guarantee}<i className="fas fa-chevron-down"/></a></li>
+                                        <li><a href={"/info?type=сollaboration"}>{strings.collaboration}<i className="fas fa-chevron-down"/></a></li>
+                                        <li style={this.state.hideAboutUs ? {display: 'none'}:{}}><a href={"/info?type=about"}>{strings.aboutUs}<i className="fas fa-chevron-down"/></a></li>
                                         <li><a href={"/contact"}>{strings.contact}<i className="fas fa-chevron-down"/></a></li>
+                                        <li><a href={"/blog"}>{strings.blog}<i className="fas fa-chevron-down"/></a></li>
                                     </ul>
                                 </div>
                             </div>

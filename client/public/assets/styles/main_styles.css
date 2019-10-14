@@ -1128,6 +1128,7 @@ select option
 	padding-bottom: 83px;
 	overflow: hidden;
 }
+
 .banner_background
 {
 	position: absolute;
@@ -1139,6 +1140,11 @@ select option
 	background-size: cover;
 	background-position: center center;
 }
+
+.banner_product_image img {
+	object-fit: contain;
+}
+
 .banner_content
 {
 	z-index: 1;
@@ -1152,9 +1158,8 @@ select option
 	text-transform: uppercase;
 	letter-spacing: 0.038em;
 }
-.banner_price
-{
-
+.fill_height {
+	height: 400px;
 }
 .banner_price
 {
@@ -2966,6 +2971,14 @@ select option
 	padding-top: 96px;
 	padding-bottom: 125px;
 }
+
+.review_image img{
+	margin-left: 20px;
+	max-width: 110px;
+	max-height: 120px;
+	object-fit: contain;
+}
+
 .reviews_title_container
 {
 	border-bottom: solid 1px #dadada;
@@ -3058,26 +3071,6 @@ select option
 	-o-transform: translateX(-50%);
 	transform: translateX(-50%);
 	z-index: 10;
-}
-.reviews_dots .owl-dot
-{
-	display: inline-block;
-	width: 15px;
-	height: 15px;
-	background: #e8e8e8;
-	border-radius: 50%;
-	margin-right: 16px;
-	box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
-	cursor: pointer;
-}
-.reviews_dots .owl-dot:last-child
-{
-	margin-right: 0px;
-}
-.reviews_dots .owl-dot.active
-{
-	background: #0e8ce4;
-	box-shadow: none;
 }
 
 /*********************************

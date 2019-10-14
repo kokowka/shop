@@ -3,19 +3,10 @@
 const mongoose = require("mongoose");
 
 const BannerSchema = new mongoose.Schema({
-    'description-en': String,
     'description-ru': String,
     'description-ua': String,
     category: String,
     type: String,
-    price: {
-        type: Number,
-        default: 0
-    },
-    discount: {
-        type: Number,
-        default: 0
-    },
     rating: {
       type: Number,
       default: 5

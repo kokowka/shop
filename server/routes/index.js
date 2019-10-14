@@ -4,6 +4,7 @@ const email = require('./email');
 const banner = require('./banner');
 const comment = require('./comment');
 const info = require('./info');
+const blogs= require('./blogs');
 
 const router = require('express').Router();
 
@@ -30,5 +31,9 @@ router.post('/getAllCommentById', comment.getAllById);
 router.put('/updateOrDeleteGood', goods.updateOrDelete);
 router.post('/createInfo', info.create);
 router.post('/getInfo', info.getByType);
+router.post('/getLastComments', comment.getLastComments);
+router.post('/createPost', blogs.create);
+router.post('/getPosts', blogs.get);
+router.post('/getPostsById', blogs.getById);
 
 module.exports = router;

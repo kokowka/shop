@@ -54,9 +54,22 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-function makeSmallerStr(str, max) {
-    if(str.length > max) return str.split('').splice(0, max).join('') + '...';
+function makeSmallerStr(str, max, isHtml = false) {
+    if(str.length > max) {
+        let res = str.split('').splice(0, max).join('') + '...';
+        if(isHtml) res +='</p>';
+        return res;
+    }
     return str;
+}
+
+function getRating (rates) {
+    let sum = 0;
+    const length = rates.length;
+    if(length === 0) return 0;
+    for(let i = 0; i<length; i++)
+        sum += rates[i];
+    return sum / length;
 }
 
 export {
@@ -68,5 +81,6 @@ export {
     isInWishList,
     isActiveWish,
     onlyUnique,
-    makeSmallerStr
+    makeSmallerStr,
+    getRating
 }
