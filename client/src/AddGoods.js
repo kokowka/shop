@@ -82,6 +82,7 @@ class AddGoods extends Component{
             'subcategory-ru': subcategoryRu,
             'subcategory-ua': subcategoryUa
         }).then(res => {
+            this.imageUploader.clearPictures();
             this.setState({
                 pictures: [],
                 urls: [],
@@ -172,6 +173,7 @@ class AddGoods extends Component{
                                             onChange={this.onDrop}
                                             imgExtension={['.jpg', '.gif', '.png', '.gif']}
                                             maxFileSize={5242880}
+                                            inputRef={iu => this.imageUploader = iu}
                                         />
                                         <button onClick={this.uploadImg} className="button contact_submit_button">Upload images</button>
                                         <textarea id="contact_form_message" className="text_field contact_form_message"
