@@ -58,34 +58,40 @@ class HeaderBanner extends Component{
             this.setState({
                 imgWidth: '12.500em',
                 imgHeight: '12.500em',
-                marginTop: '500px'
+                marginTop: '500px',
+                width: '75%',
+                rowMargin: '0'
             });
         else if(soSmall) {
             this.setState({
                 imgWidth: '6.250em',
                 imgHeight: '6.250em',
-                marginTop: '200px'
+                marginTop: '200px',
+                width: '100%',
+                rowMargin: '0'
             });
         }
         else {
             this.setState({
-                imgWidth: '25.000em',
-                imgHeight: '25.000em',
-                marginTop: ''
+                imgWidth: '26.000em',
+                imgHeight: '26.000em',
+                marginTop: '20px',
+                width: '75%',
+                rowMargin: '250px'
             });
         }
 
     };
 
     render() {
-        return <div style={this.state.isLoading? {marginTop: '600px'} : {}}>
-                <div style={this.state.isLoading? {display: 'none'} : {}} className="banner">
+        return <div style={this.state.isLoading? {marginTop: '300px'} : {}}>
+                <div style={this.state.isLoading? {display: 'none'} : {width: this.state.width}} className="banner">
                     <Slider {...this.state.sliderSettings}>
                         {this.state.banner.map((value, key) => {
                             return <div key={key}>
                                 <div className="banner_background"/>
                                 <div className="container fill_height">
-                                    <div className="row fill_height">
+                                    <div style={{marginRight: this.state.rowMargin}} className="row fill_height">
                                         <div className="banner_product_image"><a href={`/product?id=${value.idOfProduct}`}><img style={{maxWidth: this.state.imgWidth,
                                             maxHeight: this.state.imgHeight, marginTop: this.state.marginTop ? this.state.marginTop : ''}} src={value.img} alt=""/></a></div>
                                         <div className="col-lg-5 offset-lg-4 fill_height">

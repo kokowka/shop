@@ -1123,10 +1123,14 @@ select option
 
 .banner
 {
-	width: 100%;
-	padding-top: 68px;
+	width: 75%;
+	float: right;
+	padding-top: 118px;
 	padding-bottom: 83px;
 	overflow: hidden;
+}
+.banner .row {
+	margin-right: 250px;
 }
 
 .banner_background
@@ -1159,7 +1163,7 @@ select option
 	letter-spacing: 0.038em;
 }
 .fill_height {
-	height: 400px;
+	height: 600px;
 }
 .banner_price
 {
@@ -1210,7 +1214,8 @@ select option
 
 .characteristics
 {
-	padding-top: 70px;
+	clear: both;
+	padding-top: 20px;
 	padding-bottom: 70px;
 }
 .char_item
