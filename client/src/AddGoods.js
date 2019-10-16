@@ -82,7 +82,8 @@ class AddGoods extends Component{
             'subcategory-ru': subcategoryRu,
             'subcategory-ua': subcategoryUa
         }).then(res => {
-            this.imageUploader.clearPictures();
+            this.state.imageUploader.state.pictures = [];
+            this.state.imageUploader.state.files = [];
             this.setState({
                 pictures: [],
                 urls: [],
@@ -167,13 +168,12 @@ class AddGoods extends Component{
                                         <input type="number" step="0.01" id="contact_form_name"
                                                className="contact_form_name input_field" placeholder="Price"
                                                required="required" data-error="Price is required."/>
-                                        <ImageUploader
+                                        <ImageUploader ref={c => this.state.imageUploader = c}
                                             withIcon={true}
                                             buttonText='Choose images'
                                             onChange={this.onDrop}
                                             imgExtension={['.jpg', '.gif', '.png', '.gif']}
                                             maxFileSize={5242880}
-                                            inputRef={iu => this.imageUploader = iu}
                                         />
                                         <button onClick={this.uploadImg} className="button contact_submit_button">Upload images</button>
                                         <textarea id="contact_form_message" className="text_field contact_form_message"
