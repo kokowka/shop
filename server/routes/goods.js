@@ -3,7 +3,7 @@ const Good = require('../models/goods');
 async function create (req, res){
     await Good.create(req.body)
         .then(result => res.json(result))
-        .catch(error => res.status(500).json(error));
+        .catch(error => {console.log(error); res.status(500).json(error)});
 }
 
 
