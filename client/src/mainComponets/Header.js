@@ -293,14 +293,16 @@ class Header extends Component {
 
                         <div className="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
                             <div className="wishlist_cart d-flex flex-row align-items-center justify-content-end">
+                                <a href={"/wishList"}>
                                 <div className="wishlist d-flex flex-row align-items-center justify-content-end">
                                     <div className="wishlist_icon"><img src="assets/images/heart.png" alt=""/></div>
                                     <div className="wishlist_content">
-                                        <div className="wishlist_text"><a href={"/wishList"}>{strings.wishList}</a></div>
+                                        <div className="wishlist_text">{strings.wishList}</div>
                                         <div className="wishlist_count">{this.state.wishList}</div>
                                     </div>
                                 </div>
-
+                                </a>
+                                <a href={"/cart"}>
                                 <div className="cart">
                                     <div
                                         className="cart_container d-flex flex-row align-items-center justify-content-end">
@@ -309,11 +311,12 @@ class Header extends Component {
                                                 <div className="cart_count"><span>{this.state.cartList}</span></div>
                                         </div>
                                         <div className="cart_content">
-                                            <div className="cart_text"><a href={"/cart"}>{strings.cart}</a></div>
+                                            <div className="cart_text">{strings.cart}</div>
                                             <div className="cart_price">{exchangeByCurrentCurrency(this.state.cartPrice, this.state.currency, this.state.exchangeValue)} {getSignCurrency(this.state.currencies[0])}</div>
                                         </div>
                                     </div>
                                 </div>
+                                </a>
                             </div>
                         </div>
                     </div>

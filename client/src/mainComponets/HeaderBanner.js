@@ -90,10 +90,11 @@ class HeaderBanner extends Component{
                         {this.state.banner.map((value, key) => {
                             return <div key={key}>
                                 <div className="banner_background"/>
+                                <a href={`/product?id=${value.idOfProduct}`}>
                                 <div className="container fill_height">
                                     <div style={{marginRight: this.state.rowMargin}} className="row fill_height">
-                                        <div className="banner_product_image"><a href={`/product?id=${value.idOfProduct}`}><img style={{maxWidth: this.state.imgWidth,
-                                            maxHeight: this.state.imgHeight, marginTop: this.state.marginTop ? this.state.marginTop : ''}} src={value.img} alt=""/></a></div>
+                                        <div className="banner_product_image"><img style={{maxWidth: this.state.imgWidth,
+                                            maxHeight: this.state.imgHeight, marginTop: this.state.marginTop }} src={value.img} alt=""/></div>
                                         <div className="col-lg-5 offset-lg-4 fill_height">
                                             <div className="banner_content">
                                                 <h1 className="banner_text">{value[`description-${getSignLanguage(this.state.language)}`]}</h1>
@@ -102,6 +103,7 @@ class HeaderBanner extends Component{
                                         </div>
                                     </div>
                                 </div>
+                                </a>
                             </div>
                         })}
                     </Slider>
