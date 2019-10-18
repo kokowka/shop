@@ -2124,3 +2124,12 @@ select option
 	max-height:9.375em;
 	max-width: 9.375em;
 }
+
+.characteristics{
+	margin-top: 50px;
+	margin-bottom: -300px;
+}
+
+.characteristics li{
+	max-width: 640px;
+}

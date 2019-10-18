@@ -37,7 +37,8 @@ class Product extends Component{
             indexOfColors: indexOfColor,
             rating: 0,
             isInWishList: isInWishList(wishList, id),
-            isLoading: true
+            isLoading: true,
+            characteristics: {}
         }
 
     }
@@ -50,7 +51,8 @@ class Product extends Component{
                 mainImg: res.data.imgs[this.state.indexOfColors * 3],
                 price: res.data.price.$numberDecimal,
                 mainColor: res.data.colors[this.state.indexOfColors],
-                rating: getRating(res.data.rating)}))
+                rating: getRating(res.data.rating),
+                characteristics: res.data[ `characteristics-${getSignLanguage(this.state.language)}`]}))
             .catch(error => console.log(error));
         axios.get('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11')
             .then(result => {
@@ -219,6 +221,18 @@ class Product extends Component{
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className={'container characteristics'}>
+                    {
+                        JSON.stringify(this.state.characteristics) !== JSON.stringify({}) ? <h3>{strings.characteristics}</h3> : ``
+                    }
+                    <ul className="list-group">
+                        {
+                            Object.keys(this.state.characteristics).map((keyName, i) => {
+                                return <li key={i} className="list-group-item">{`${keyName}: ${this.state.characteristics[keyName]}`}</li>
+                            })
+                        }
+                    </ul>
                 </div>
             </div>
             <Comments/>

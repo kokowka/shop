@@ -182,7 +182,8 @@
     "guarantee": "Гарантия",
     "collaboration": "Сотрудничество",
     "aboutUs": "О нас",
-    "continue": "Продолжить Читать"
+    "continue": "Продолжить Читать",
+    "characteristics": "Характеристики"
   },
   "Українська": {
     "categories": "Категорії",
@@ -279,6 +280,7 @@
     "guarantee": "Гарантія",
     "collaboration": "Співпраця",
     "aboutUs": "Про нас",
-    "continue": "Продовжити читати"
+    "continue": "Продовжити читати",
+    "characteristics": "Характеристики"
   }
 }
