@@ -122,7 +122,7 @@ class Cart extends Component {
                                 <div className="order_total">
                                     <div className="order_total_content text-md-right">
                                         <div className="order_total_title">{strings.orderTotal}:</div>
-                                        <div className="order_total_amount">{this.state.signCurrency[this.state.currency]}{this.state.total}</div>
+                                        <div className="order_total_amount">{this.state.signCurrency[this.state.currency]}{exchangeByCurrentCurrency(this.state.total, this.state.currency, this.state.exchangeValue)}</div>
                                     </div>
                                 </div>
 
