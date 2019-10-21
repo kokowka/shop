@@ -62,10 +62,10 @@ class AddGoods extends Component{
         axios.post(`/goods/create`, {
             name: e.target[0].value,
             brand: e.target[1].value,
-            category: e.target[6].value,
-            price: e.target[7].value,
-            'description-ru': e.target[11].value,
-            'description-ua': e.target[12].value,
+            category: e.target[2].value,
+            price: e.target[3].value,
+            'description-ru': e.target[7].value,
+            'description-ua': e.target[8].value,
             imgs: this.state.urls,
             'characteristics-ru': characteristicsRu,
             'characteristics-ua': characteristicsUa,
@@ -80,6 +80,8 @@ class AddGoods extends Component{
                 colors: []
         }); console.log('Added one Good', res)})
             .catch(error => console.log(error))
+
+
     };
 
     setCategory = (e) => {
