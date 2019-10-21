@@ -25,9 +25,9 @@ function roundPriceWithDiscount(price, discount) {
 }
 
 function exchangeByCurrentCurrency(price, currency, exchangeValue) {
-    if(currency === "₴ Гривня" || exchangeValue.length === 0) return price;
-    else if(currency === "₽ Рубль") return Math.round((price / exchangeValue[2].sale));
-    else return Math.round((price / exchangeValue[0].sale));
+    if(exchangeValue.length === 0) return price;
+    if(currency === "₴ Гривня") return Math.round((price * parseFloat(exchangeValue[0].sale).toFixed(1)));
+    else return price;
 }
 
 function isInWishList(wishList, id) {
