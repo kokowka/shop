@@ -61,10 +61,11 @@ class AddGoods extends Component{
         const getCharacteristicUaById = document.getElementById('characteristicUa').value.split('\n');
         const characteristicsRu = {};
         const characteristicsUa = {};
-        for(let i = 0; i<getCharacteristicUaById.length/2; i+=2){
+        for(let i = 0; i<getCharacteristicUaById.length; i+=2){
             characteristicsRu[getCharacteristicRuById[i]] = getCharacteristicRuById[i + 1];
             characteristicsUa[getCharacteristicUaById[i]] = getCharacteristicUaById[i + 1];
         }
+
         axios.post(`/goods/create`, {
             name: e.target[0].value,
             brand: e.target[1].value,
