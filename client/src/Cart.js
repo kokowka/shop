@@ -50,7 +50,7 @@ class Cart extends Component {
     getTotal(cart) {
         let total = 0;
         for(let i = 0; i<cart.length; i++)
-            total +=Number.parseInt(cart[i].price);
+            total +=Number.parseInt(cart[i].price) * cart[i].quantity;
         return total;
     }
 
