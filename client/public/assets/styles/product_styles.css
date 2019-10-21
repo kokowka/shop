@@ -2127,9 +2127,12 @@ select option
 
 .characteristics{
 	margin-top: 50px;
-	margin-bottom: -300px;
 }
 
 .characteristics li{
 	max-width: 640px;
+}
+
+.comments .slick-track{
+	max-height: 0;
 }

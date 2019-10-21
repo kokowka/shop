@@ -158,7 +158,7 @@ class Product extends Component{
                         </div>
 
                         <div className="col-lg-5 order-lg-2 order-1">
-                            <div className="image_selected"><img src={this.state.mainImg} alt=""/></div>
+                            <div className="image_selected"><a href={this.state.mainImg}><img src={this.state.mainImg} alt=""/></a></div>
                         </div>
 
                         <div className="col-lg-5 order-3">
