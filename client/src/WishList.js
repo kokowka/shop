@@ -79,11 +79,6 @@ class WishList extends Component {
                                                         <div className="cart_item_title" style={key === 0 ? {} : {display: "none"}}>{strings.name}</div>
                                                         <div className="cart_item_text">{value.name}</div>
                                                     </div>
-                                                    <div style={{display: this.state.hideNav ? `none`: ``}} className="wishlist_color cart_item_color cart_info_col">
-                                                        <div className="cart_item_title" style={key === 0 ? {} : {display: "none"}}>{strings.color}</div>
-                                                        <div className="cart_item_text"><span style={{backgroundColor:value.color, marginLeft: "5px"}}/>
-                                                        </div>
-                                                    </div>
                                                     <div style={{display: this.state.hideNav ? `none`: ``}} className="cart_item_price cart_info_col">
                                                         <div className="cart_item_title" style={key === 0 ? {} : {display: "none"}}>{strings.price}</div>
                                                         <div className="cart_item_text" style={{marginLeft: "30px"}}>{this.state.signCurrency[this.state.currency]}{exchangeByCurrentCurrency(value.price, this.state.currency, this.state.exchangeValue)}</div>
