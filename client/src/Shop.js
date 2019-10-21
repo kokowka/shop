@@ -7,7 +7,6 @@ import localization from './data/localization';
 import axios from 'axios';
 import Pagination from "react-js-pagination";
 import {Link} from "react-router-dom";
-import { CirclePicker } from 'react-color';
 import {Range} from 'rc-slider';
 import 'rc-slider/dist/rc-slider.css';
 import {
@@ -33,7 +32,6 @@ class Shop extends Component {
         this.state = {
             goods: [
                 {
-                    colors: [],
                     imgs: [],
                     price: []
                 }
@@ -45,10 +43,8 @@ class Shop extends Component {
             currentGoods: [],
             itemsOnPage: 12,
             isActive: [],
-            colors: [],
             brands: [],
             exchangeValue: [],
-            selectedColors: [],
             max: 0,
             min: 0,
             bestGoods: [],
@@ -119,9 +115,6 @@ class Shop extends Component {
         axios.post(`/getBestGoods?size=10`)
             .then(res => this.setState({bestGoods: res.data}))
             .catch(err => console.log(err));
-        axios.post(`/getAll?type=colors`)
-            .then(res => this.setState({colors: res.data.result}))
-            .catch(err => console.log(err));
         axios.post(`/getAll?type=brand`)
             .then(res => this.setState({brands: res.data.result}))
             .catch(err => console.log(err));
@@ -174,7 +167,7 @@ class Shop extends Component {
         const indexOfGoods = e.target.parentNode.getAttribute('value');
 
         if(allClassNames[1] !== 'active') {
-            list.push({id: this.state.currentGoods[indexOfGoods].id, price: this.state.currentGoods[indexOfGoods].price["$numberDecimal"], color: this.state.currentGoods[indexOfGoods].colors[0], img: this.state.currentGoods[indexOfGoods].imgs[0], name: this.state.currentGoods[indexOfGoods].name});
+            list.push({id: this.state.currentGoods[indexOfGoods].id, price: this.state.currentGoods[indexOfGoods].price["$numberDecimal"], img: this.state.currentGoods[indexOfGoods].imgs[0], name: this.state.currentGoods[indexOfGoods].name});
             localStorage.setItem('wishList', JSON.stringify(list));
             this.setState({isActive: this.state.isActive.concat({id: indexOfGoods})});
             e.target.className += ' active';
@@ -193,48 +186,10 @@ class Shop extends Component {
         }
     };
 
-    handleColorChange = async (color, e) => {
-        let boxShadow = e.target.style.boxShadow.split(' ');
-        const isOn = boxShadow[6] === '3px';
-        let selectedColors = this.state.selectedColors;
-        if(isOn){
-            boxShadow[6] = '14px';
-            e.target.style.boxShadow = boxShadow.join(' ');
-            let index = -1;
-            for(let i = 0; i<selectedColors.length; i++) {
-                if(selectedColors[i] === color.hex)
-                    index = i;
-            }
-            if (index > -1) {
-                selectedColors.splice(index, 1);
-            }
-            await this.setState({selectedColors: selectedColors});
-            this.setFiltersForCurrentGoods();
-        } else {
-            this.setState({ color: color.hex});
-            boxShadow[6] = '3px';
-            e.target.style.boxShadow = boxShadow.join(' ');
-            selectedColors = selectedColors.concat(color.hex);
-            await this.setState({selectedColors: selectedColors});
-            this.setFiltersForCurrentGoods();
-        }
-    };
-
     setFiltersForCurrentGoods = () => {
         const goods = this.state.goods;
-        const filtered = goods.filter(this.filterByColor).filter(this.filterByRangePrice).filter(this.filterByCharacteristics).filter(this.filterBySybcategory);
+        const filtered = goods.filter(this.filterByRangePrice).filter(this.filterByCharacteristics).filter(this.filterBySybcategory);
         this.setState({goodsByFilter: filtered, currentGoods: this.getCurrentGoods(filtered, 1), activePage: 1});
-    };
-
-    filterByColor = (value) => {
-        if(this.state.selectedColors.length === 0) return true;
-        for(let i = 0; i<this.state.selectedColors.length; i++){
-            for(let j = 0; j<value.colors.length; j++) {
-                if (value.colors[j] === this.state.selectedColors[i])
-                    return true;
-            }
-        }
-        return false;
     };
 
     filterBySybcategory = (value) => {
@@ -284,7 +239,7 @@ class Shop extends Component {
             }
         }
         this.setState({checkedFilter: checkedFilter}, ()=>{
-            const filtered = this.state.goods.filter(this.filterByCharacteristics).filter(this.filterByColor).filter(this.filterByRangePrice).filter(this.filterBySybcategory);
+            const filtered = this.state.goods.filter(this.filterByCharacteristics).filter(this.filterByRangePrice).filter(this.filterBySybcategory);
             this.setState({goodsByFilter: filtered, currentGoods: this.getCurrentGoods(filtered, 1), activePage: 1});
         });
     };
@@ -367,11 +322,7 @@ class Shop extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="sidebar_section">
-                                    <div className="sidebar_subtitle color_subtitle" style={{marginBottom: "5px"}}>{strings.color}</div>
-                                    <CirclePicker colors={ this.state.colors }
-                                                  onSwatchHover={ this.handleColorChange }/>
-                                </div>
+                                <div className="sidebar_section"/>
                                     {Object.keys(this.state.filters).map((keyName, i) => {
                                         return <div style={this.state.isAccessoriesComputerOrSale && !this.state.nameOfSubcategory ? {display: 'none'} : {}} key={i} className={'filters'}>
                                             <h4>{keyName}</h4>

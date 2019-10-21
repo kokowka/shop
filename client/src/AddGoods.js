@@ -5,7 +5,6 @@ import Footer from "./mainComponets/Footer";
 import axios from "axios";
 import LocalizedStrings from 'react-localization';
 import localization from './data/localization';
-import { CompactPicker } from 'react-color';
 import ImageUploader from 'react-images-upload';
 
 let strings = new LocalizedStrings(localization);
@@ -23,18 +22,12 @@ class AddGoods extends Component{
         }).catch(error => window.location.href = '/');
         this.onDrop = this.onDrop.bind(this);
         this.state = {
-            color: '#000000',
             pictures: [],
             urls: [],
-            colors: [],
             categories: strings.category,
             category: 'allCategories'
         }
     }
-
-    handleColorChange = (color) => {
-        this.setState({ color: color.hex, colors: this.state.colors.concat(color.hex) });
-    };
 
     onDrop(picture) {
         this.setState({pictures: picture});
@@ -69,7 +62,6 @@ class AddGoods extends Component{
         axios.post(`/goods/create`, {
             name: e.target[0].value,
             brand: e.target[1].value,
-            colors: this.state.colors,
             category: e.target[6].value,
             price: e.target[7].value,
             'description-ru': e.target[11].value,
@@ -115,8 +107,6 @@ class AddGoods extends Component{
                                                required="required" data-error="Name is required."/>
                                         <input type="text" className="contact_form_name input_field" placeholder="Brand"
                                                required="required" data-error="Brand is required."/>
-                                        <CompactPicker color={ this.state.color }
-                                                       onChangeComplete={ this.handleColorChange }/>
                                         <select onChange={this.setCategory} className="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
                                             {
                                                 Object.keys(this.state.categories).map((keyName, i) => {

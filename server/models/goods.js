@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 
 const GoodSchema = new mongoose.Schema({
     name: String,
-    colors: Array,
     category: String,
     'description-ru': String,
     'description-ua': String,

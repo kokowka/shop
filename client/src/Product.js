@@ -20,11 +20,9 @@ class Product extends Component{
         const currency = localStorage.getItem('currency');
         strings.setLanguage(language);
         const wishList = JSON.parse(localStorage.getItem('wishList')) || [];
-        const indexOfColor = url.searchParams.get("color") || 0;
         this.state = {
             good: {
                 imgs: [],
-                colors: [],
                 price: {}
             },
             id: id,
@@ -33,8 +31,6 @@ class Product extends Component{
             mainImg: '',
             currency: currency,
             quantity: 1,
-            mainColor: '',
-            indexOfColors: indexOfColor,
             rating: 0,
             isInWishList: isInWishList(wishList, id),
             isLoading: true,
@@ -48,9 +44,7 @@ class Product extends Component{
         axios.post(`/goods/`+this.state.id)
             .then((res) => this.setState({
                 good: res.data,
-                mainImg: res.data.imgs[this.state.indexOfColors * 3],
                 price: res.data.price.$numberDecimal,
-                mainColor: res.data.colors[this.state.indexOfColors],
                 rating: getRating(res.data.rating),
                 characteristics: res.data[ `characteristics-${getSignLanguage(this.state.language)}`]}))
             .catch(error => console.log(error));
@@ -74,21 +68,6 @@ class Product extends Component{
         if(this.state.quantity !==1) this.setState({quantity:this.state.quantity - 1});
     };
 
-    onColorClick = e => {
-        const val = e.target.style.background;
-        const listOfCodes = val.replace( /^\D+/, '').replace(')', '').split(', ');
-        const hex = '#' + this.rgbToHex(listOfCodes[0]) + this.rgbToHex(listOfCodes[1]) + this.rgbToHex(listOfCodes[2]);
-        const indexOfColors = this.state.good.colors.indexOf(hex);
-        this.setState({mainColor: val, indexOfColors: indexOfColors, mainImg: this.state.good.imgs[indexOfColors * 3]});
-    };
-
-    rgbToHex = function (rgb) {
-        let hex = Number(rgb).toString(16);
-        if (hex.length < 2) {
-            hex = "0" + hex;
-        }
-        return hex;
-    };
 
     changeRating = rating => {
         const isVoting = localStorage.getItem(`vote${this.state.id}`);
@@ -111,7 +90,7 @@ class Product extends Component{
         if(wishList) list = wishList;
         const isActive = document.getElementsByClassName('product_fav')[0].className.split(' ')[1];
         if(!isActive) {
-            list.push({id: this.state.id, price: roundPriceWithDiscount(this.state.price, this.state.good.discount), color: this.state.mainColor, img: this.state.mainImg, name: this.state.good.name});
+            list.push({id: this.state.id, price: roundPriceWithDiscount(this.state.price, this.state.good.discount), img: this.state.mainImg, name: this.state.good.name});
             localStorage.setItem('wishList', JSON.stringify(list));
             this.setState({isInWishList: true});
         }
@@ -132,7 +111,7 @@ class Product extends Component{
         let items = [];
         const getAllCart = localStorage.getItem('cart');
         if(getAllCart) items = JSON.parse(getAllCart);
-        items.push({id: this.state.id, price: roundPriceWithDiscount(this.state.price, this.state.good.discount), quantity: this.state.quantity, color: this.state.mainColor, img: this.state.mainImg, name: this.state.good.name});
+        items.push({id: this.state.id, price: roundPriceWithDiscount(this.state.price, this.state.good.discount), quantity: this.state.quantity, img: this.state.mainImg, name: this.state.good.name});
         localStorage.setItem('cart', JSON.stringify(items));
         window.location.href = '/cart';
     };
@@ -151,9 +130,9 @@ class Product extends Component{
                     <div className="row">
                         <div className="col-lg-2 order-lg-1 order-2">
                             <ul className="image_list">
-                                <li><img onClick={this.onImgClick} src={this.state.good.imgs[this.state.indexOfColors * 3]} alt=""/></li>
-                                <li><img onClick={this.onImgClick} src={this.state.good.imgs[this.state.indexOfColors * 3 + 1]} alt=""/></li>
-                                <li><img onClick={this.onImgClick} src={this.state.good.imgs[this.state.indexOfColors * 3 + 2]} alt=""/></li>
+                                <li><img onClick={this.onImgClick} src={this.state.good.imgs[0]} alt=""/></li>
+                                <li><img onClick={this.onImgClick} src={this.state.good.imgs[1]} alt=""/></li>
+                                <li><img onClick={this.onImgClick} src={this.state.good.imgs[2]} alt=""/></li>
                             </ul>
                         </div>
 
@@ -189,24 +168,6 @@ class Product extends Component{
                                                             className="fas fa-chevron-down"/></div>
                                                     </div>
                                             </div>
-
-                                            <ul className="product_color">
-                                                <li>
-                                                    <span>{strings.color}: </span>
-                                                    <div className="color_mark_container">
-                                                        <div id="selected_color" className="color_mark" style={{background: this.state.mainColor}} />
-                                                    </div>
-                                                    <div className="color_dropdown_button"><i
-                                                        className="fas fa-chevron-down"/></div>
-
-                                                    <ul className="color_list">
-                                                        {this.state.good.colors.map((value) => {
-                                                            return <li key={value}><div onClick={this.onColorClick} className="color_mark"
-                                                                     style={{background: value}} /></li>
-                                                        })}
-                                                    </ul>
-                                                </li>
-                                            </ul>
 
                                         </div>
 

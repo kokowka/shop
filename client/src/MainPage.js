@@ -167,7 +167,7 @@ class MainPage extends Component {
         const allClassNames = e.target.className.split(' ');
         const indexOfGoods = e.target.parentNode.getAttribute('value');
         if(allClassNames[1] !== 'active') {
-            list.push({id: this.state.goods[indexOfGoods].id, price: roundPriceWithDiscount(this.state.goods[indexOfGoods].price["$numberDecimal"], this.state.goods[indexOfGoods].discount), color: this.state.goods[indexOfGoods].colors[0], img: this.state.goods[indexOfGoods].imgs[0], name: this.state.goods[indexOfGoods].name});
+            list.push({id: this.state.goods[indexOfGoods].id, price: roundPriceWithDiscount(this.state.goods[indexOfGoods].price["$numberDecimal"], this.state.goods[indexOfGoods].discount), img: this.state.goods[indexOfGoods].imgs[0], name: this.state.goods[indexOfGoods].name});
             localStorage.setItem('wishList', JSON.stringify(list));
             this.setState({isActive: this.state.isActive.concat({id: indexOfGoods})});
             e.target.className += ' active';
@@ -191,7 +191,7 @@ class MainPage extends Component {
         let items = [];
         const getAllCart = localStorage.getItem('cart');
         if(getAllCart) items = JSON.parse(getAllCart);
-        items.push({id: this.state.goods[index].id, price: roundPriceWithDiscount(this.state.goods[index].price["$numberDecimal"], this.state.goods[index].discount), quantity: 1, color: this.state.goods[index].colors[0], img: this.state.goods[index].imgs[0], name: this.state.goods[index].name});
+        items.push({id: this.state.goods[index].id, price: roundPriceWithDiscount(this.state.goods[index].price["$numberDecimal"], this.state.goods[index].discount), quantity: 1, img: this.state.goods[index].imgs[0], name: this.state.goods[index].name});
         localStorage.setItem('cart', JSON.stringify(items));
     };
 
@@ -202,12 +202,6 @@ class MainPage extends Component {
 
     onNextDeals = () => {
         this.state.dealsSlider.slickNext();
-    };
-
-    onClickColor = (e) => {
-        const color = e.target.value;
-        const id = e.target.parentElement.getAttribute('value');
-        window.location.href = `/product?id=${id}&color=${color}`;
     };
 
     changeRating = (rating, id) => {
@@ -355,16 +349,6 @@ class MainPage extends Component {
                                                                     <div><a href={`product?id=${value.id}`}>{value.name}</a></div>
                                                                 </div>
                                                                 <div className="product_extras">
-                                                                    <div value={value.id} onClick={this.onClickColor} className="product_color">
-                                                                        {
-                                                                            value.colors.map((val, k) => {
-                                                                                return <input value={k} key={k} type="radio" checked
-                                                                                              name="product_color"
-                                                                                              style={{background: val}}
-                                                                                              readOnly={true}/>
-                                                                            })
-                                                                        }
-                                                                    </div>
                                                                     <button value={key} onClick={this.addToCart} className="product_cart_button">{strings.addToCart}
                                                                     </button>
                                                                 </div>
