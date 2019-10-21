@@ -46,6 +46,7 @@ class Product extends Component{
                 good: res.data,
                 price: res.data.price.$numberDecimal,
                 rating: getRating(res.data.rating),
+                mainImg: res.data.imgs[0],
                 characteristics: res.data[ `characteristics-${getSignLanguage(this.state.language)}`]}))
             .catch(error => console.log(error));
         axios.get('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11')
