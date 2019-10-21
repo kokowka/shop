@@ -259,7 +259,7 @@ class MainPage extends Component {
                                                     </div>
                                                     <div
                                                         className="deals_info_line d-flex flex-row justify-content-start">
-                                                        <div className="deals_item_name"><a href={`/product?id=${value.id}`}>{makeSmallerStr(value.name, 12)}</a></div>
+                                                        <div className="deals_item_name"><a href={`/product?id=${value.id}`}>{makeSmallerStr(value.name, 10)}</a></div>
                                                         <div className="deals_item_price ml-auto">{getSignCurrency(this.state.currency)}{exchangeByCurrentCurrency(roundPriceWithDiscount(value.price['$numberDecimal'], value.discount), this.state.currency, this.state.exchangeValue)}</div>
                                                     </div>
                                                     <div className="available">
