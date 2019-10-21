@@ -85,7 +85,7 @@ class Header extends Component {
     getCartPrice = (cart) => {
         let price = 0;
         for(let i = 0; i<cart.length; i++)
-            price += Number.parseInt(cart[i].price);
+            price += Number.parseInt(cart[i].price) * cart[i].quantity;
         return price;
     };
 
