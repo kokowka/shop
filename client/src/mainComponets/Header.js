@@ -312,7 +312,7 @@ class Header extends Component {
                                         </div>
                                         <div className="cart_content">
                                             <div className="cart_text">{strings.cart}</div>
-                                            <div className="cart_price">{exchangeByCurrentCurrency(this.state.cartPrice, this.state.currency, this.state.exchangeValue)} {getSignCurrency(this.state.currencies[0])}</div>
+                                            <div className="cart_price">{exchangeByCurrentCurrency(this.state.cartPrice, this.state.currencies[0], this.state.exchangeValue)} {getSignCurrency(this.state.currencies[0])}</div>
                                         </div>
                                     </div>
                                 </div>
