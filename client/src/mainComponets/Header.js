@@ -250,7 +250,7 @@ class Header extends Component {
 
                         <div className="col-lg-2 col-sm-3 col-3 order-1">
                             <div className="logo_container">
-                                <div className="logo"><a href={'/'}>Ezer</a></div>
+                                <div className="logo"><a href={'/'}>ezEr</a></div>
                             </div>
                         </div>
 
