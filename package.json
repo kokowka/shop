@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "description": "shop",
   "scripts": {
-    "start": "nodemon ./server"
+    "start": "node ./server"
   },
   "author": "kokowka",
   "license": "ISC",
   "dependencies": {
     "concurrently": "^4.1.2",
     "express-favicon": "^2.0.1",
-    "nodemailer": "^6.3.1",
-    "nodemon": "^1.19.4"
+    "nodemailer": "^6.3.1"
   }
 }
