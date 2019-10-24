@@ -13,3 +13,8 @@
 .error{
     color: #c82333;
 }
+
+.cart_not_register{
+    width: 300px;
+    margin-top: 25px;
+}

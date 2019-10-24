@@ -12,7 +12,6 @@ let strings = new LocalizedStrings(localization);
 class Cart extends Component {
     constructor(props) {
         super(props);
-        if(!localStorage.getItem('fullName')) window.location.href = '/register';
         const language = localStorage.getItem('language') || 'Українська';
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         if(cart.length === 0) window.location.href = '/shop';
@@ -29,7 +28,12 @@ class Cart extends Component {
             exchangeValue: [],
             total: this.getTotal(cart),
             hideNav: false,
-            isLoading: true
+            isLoading: true,
+            isErrorEmail: false,
+            isErrorFullName: false,
+            isErrorPhone: false,
+            isRegister: !!localStorage.getItem('fullName'),
+            isMadeOrder: false
         }
     }
 
@@ -62,17 +66,34 @@ class Cart extends Component {
     };
 
     makeOrder = () => {
+        if(this.state.isMadeOrder)
+            window.location.href = '/';
+        const isRegister = this.state.isRegister;
+        const phoneField = isRegister ? localStorage.getItem('phone') : document.getElementById('codeOfNumber').value
+            + document.getElementById('number').value;
+        const emailField = isRegister ? localStorage.getItem('email') : document.getElementById('email').value;
+        const fullNameField = isRegister ? localStorage.getItem('fullName'): document.getElementById('fullName').value;
+
+        if(phoneField.length < 10) {
+            this.setState({isErrorPhone: true});
+            return;
+        }
+        if(!emailField.includes('@')){
+            this.setState({isErrorEmail: true});
+            return;
+        }
+        if(fullNameField.length === 0){
+            this.setState({isErrorFullName: true});
+            return;
+        }
+
         axios.post(`/sendEmail`, {
             subject: 'New order',
-            html: `${JSON.stringify(this.state.cart)} ${localStorage.getItem('phone')} ${localStorage.getItem('email')}`
+            html: `${JSON.stringify(this.state.cart)} ${fullNameField} ${emailField} ${phoneField}`
         });
         localStorage.removeItem('cart');
-        setTimeout(
-            () => {
-                window.location.href = '/';
-            },
-            100
-        );
+        this.setState({isMadeOrder: true});
+
     };
 
     render() {
@@ -81,6 +102,7 @@ class Cart extends Component {
                 <title>{strings.cart}</title>
                 <link rel="stylesheet" type="text/css" href="assets/styles/cart_styles.css"/>
                 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet"/>
+                <link rel="stylesheet" type="text/css" href="assets/styles/register.css"/>
             </Helmet>
             <Header/>
             <div className="cart_section">
@@ -125,9 +147,39 @@ class Cart extends Component {
                                         <div className="order_total_amount">{this.state.signCurrency[this.state.currency]}{exchangeByCurrentCurrency(this.state.total, this.state.currency, this.state.exchangeValue)}</div>
                                     </div>
                                 </div>
+                                <center>
+                                    <div style={{display: this.state.isRegister ? `none` : ``}} className="cart_not_register">
+                                        <div className="form-group input-group">
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text"> <i className="fa fa-user"/> </span>
+                                            </div>
+                                            <input id="fullName" name="" className={`form-control${this.state.isErrorFullName ? ' error': ''}`} placeholder="Full name" type="text"/>
+                                        </div>
+                                        <div className="form-group input-group">
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text"> <i className="fa fa-envelope"/> </span>
+                                            </div>
+                                            <input id="email" name="" className={`form-control${this.state.isErrorEmail ? ' error': ''}`} placeholder="Email address" type="email"/>
+                                        </div>
+                                        <div className="form-group input-group">
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text"> <i className="fa fa-phone"/> </span>
+                                            </div>
+                                            <select id="codeOfNumber" className="custom-select">
+                                                <option select="">+380</option>
+                                                <option value="1">+7</option>
+                                                <option value="2">+48</option>
+                                            </select>
+                                            <input id="number" name="" className={`form-control${this.state.isErrorPhone ? ' error': ''}`} placeholder="Phone number" type="text"/>
+                                        </div>
+                                    </div>
+                                    <div style={{display: this.state.isMadeOrder ? `` : `none`}} className="alert alert-secondary" role="alert">
+                                        {strings.madeOrder}
+                                    </div>
+                                </center>
 
                                 <div className="cart_buttons">
-                                    <button type="button" onClick={this.makeOrder} className="button cart_button_checkout">{strings.makeAnOrder}</button>
+                                    <button type="button" onClick={this.makeOrder} className="button cart_button_checkout">{ this.state.isMadeOrder ? strings.continueBuy:strings.makeAnOrder}</button>
                                 </div>
                             </div>
                         </div>
