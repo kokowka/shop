@@ -16,7 +16,7 @@ router.post('/logIn', users.logIn);
 router.post('/isAdmin', users.isAdmin);
 router.put('/goods/updateRating', goods.updateRating);
 router.put('/goods/updateRate', goods.updateRate);
-router.post('/sendEmail', email.sendEmailMailer);
+router.post('/sendEmail', email.sendEmail);
 router.post('/goods/addTestGoods', goods.addTestGoods);
 router.post('/getAll', goods.getAll);
 router.post('/getBestGoods', goods.getBestGoods);
