@@ -121,8 +121,8 @@ class Cart extends Component {
                                                 <div
                                                     className="cart_item_info d-flex flex-md-row flex-column justify-content-between">
                                                     <div className="cart_item_name cart_info_col">
-                                                        <div className="cart_item_title" style={key === 0 ? {} : {display: "none"}}>{makeSmallerStr(strings.name, 20)}</div>
-                                                        <div className="cart_item_text">{value.name}</div>
+                                                        <div className="cart_item_title" style={key === 0 ? {} : {display: "none"}}>{strings.name}</div>
+                                                        <div className="cart_item_text">{makeSmallerStr(value.name, 25)}</div>
                                                     </div>
                                                     <div style={{display: this.state.hideNav ? `none`: ``}} className="cart_item_quantity cart_info_col">
                                                         <div className="cart_item_title" style={key === 0 ? {} : {display: "none"}}>{strings.quantity}</div>
