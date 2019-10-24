@@ -66,8 +66,10 @@ class Cart extends Component {
     };
 
     makeOrder = () => {
-        if(this.state.isMadeOrder)
+        if(this.state.isMadeOrder) {
             window.location.href = '/';
+            return;
+        }
         const isRegister = this.state.isRegister;
         const phoneField = isRegister ? localStorage.getItem('phone') : document.getElementById('codeOfNumber').value
             + document.getElementById('number').value;
