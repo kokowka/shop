@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import LocalizedStrings from 'react-localization';
 import localization from "./data/localization";
 import axios from 'axios';
-import {exchangeByCurrentCurrency} from "./utils";
+import {exchangeByCurrentCurrency, makeSmallerStr} from "./utils";
 
 let strings = new LocalizedStrings(localization);
 
@@ -121,7 +121,7 @@ class Cart extends Component {
                                                 <div
                                                     className="cart_item_info d-flex flex-md-row flex-column justify-content-between">
                                                     <div className="cart_item_name cart_info_col">
-                                                        <div className="cart_item_title" style={key === 0 ? {} : {display: "none"}}>{strings.name}</div>
+                                                        <div className="cart_item_title" style={key === 0 ? {} : {display: "none"}}>{makeSmallerStr(strings.name, 25)}</div>
                                                         <div className="cart_item_text">{value.name}</div>
                                                     </div>
                                                     <div style={{display: this.state.hideNav ? `none`: ``}} className="cart_item_quantity cart_info_col">
